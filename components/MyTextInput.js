@@ -6,8 +6,8 @@ import { COLORS, FONT_SIZES } from "../constants";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.grey,
-    padding: 8,
-    margin: 16,
+    padding: 16,
+    margin: 8,
     borderRadius: 8,
     width: "80%",
   },
@@ -23,7 +23,13 @@ const styles = StyleSheet.create({
 const MyTextInput = (props) => {
   return (
     <View style={styles.container}>
-      <TextInput placeholder={props.label} style={styles.input}></TextInput>
+      <TextInput
+        value={props.value}
+        placeholder={props.label}
+        style={styles.input}
+        onChangeText={props.onChange}
+        secureTextEntry={props.password}
+      ></TextInput>
     </View>
   );
 };
