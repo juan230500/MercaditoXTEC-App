@@ -5,27 +5,35 @@ import { COLORS, FONT_SIZES } from "../constants";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.grey,
-    padding: 16,
+    padding: 12,
     margin: 8,
     borderRadius: 8,
-    width: "80%",
+    borderWidth: 1,
+    borderColor: COLORS.grey,
+    width: "90%",
   },
   input: {
     borderBottomWidth: 1,
+    borderColor: COLORS.grey,
     padding: 0,
     margin: 0,
-    fontSize: FONT_SIZES.medium,
+    fontSize: 20,
+    fontFamily: "Cabin",
     textAlign: "center",
+  },
+  label: {
+    fontSize: 12,
+    fontFamily: "Cabin",
+    color: COLORS.grey,
   },
 });
 
 const MyTextInput = (props) => {
   return (
     <View style={styles.container}>
+      <Text style={styles.label}>{props.label}:</Text>
       <TextInput
         value={props.value}
-        placeholder={props.label}
         style={styles.input}
         onChangeText={props.onChange}
         secureTextEntry={props.password}

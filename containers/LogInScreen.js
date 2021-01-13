@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import MyTextInput from "../components/MyTextInput";
 import MyButton from "../components/MyButton";
 import MyLink from "../components/MyLink";
+import MyLayout from "../components/MyLayout";
 import { useState } from "react";
 
 const styles = StyleSheet.create({
@@ -30,7 +31,7 @@ const LogInScreen = ({ navigation }) => {
       results[key] = formData[key].value;
     }
     console.log(results);
-    //navigation.navigate("Profile");
+    navigation.navigate("Profile");
   };
 
   const inputChangeHandler = (value, key) => {
@@ -52,24 +53,24 @@ const LogInScreen = ({ navigation }) => {
   ));
 
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
-      <View style={styles.container}>
-        <Text style={{ fontSize: 32, textAlign: "center" }}>Ingreso</Text>
+    <MyLayout title="Ingreso">
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            {inputs}
+            <MyButton title="Ingresar" onPress={verifyData}></MyButton>
+          </View>
 
-        <View style={styles.inputContainer}>
-          {inputs}
-          <MyButton title="Ingresar" onPress={verifyData}></MyButton>
+          <MyLink
+            onPress={() => {
+              navigation.navigate("SignUp");
+            }}
+          >
+            No tengo una cuenta
+          </MyLink>
         </View>
-
-        <MyLink
-          onPress={() => {
-            navigation.navigate("SignUp");
-          }}
-        >
-          No tengo una cuenta
-        </MyLink>
       </View>
-    </View>
+    </MyLayout>
   );
 };
 

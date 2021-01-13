@@ -6,6 +6,9 @@ const styles = StyleSheet.create({
   link: {
     color: COLORS.primary,
     textDecorationLine: "underline",
+    marginVertical: 16,
+    fontSize: 16,
+    fontFamily: "Cabin",
   },
 });
 

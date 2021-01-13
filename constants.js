@@ -1,9 +1,9 @@
 export const COLORS = {
   white: "#fff",
   black: "#222831",
-  grey: "#e8e8e8",
-  primary: "#30475e",
-  accent: "#f05454",
+  grey: "#ccc",
+  primary: "#2C7873",
+  accent: "#F9B34C",
 };
 
 export const FONT_SIZES = {

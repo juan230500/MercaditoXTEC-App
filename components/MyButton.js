@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.accent,
     paddingVertical: 4,
     paddingHorizontal: 24,
+    borderRadius: 64,
+    margin: 16,
   },
 });
 

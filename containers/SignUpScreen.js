@@ -4,12 +4,13 @@ import { StyleSheet, Text, View } from "react-native";
 import MyTextInput from "../components/MyTextInput";
 import MyButton from "../components/MyButton";
 import MyLink from "../components/MyLink";
+import MyLayout from "../components/MyLayout";
 import { useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "space-between",
     height: "90%",
   },
   inputContainer: {
@@ -55,24 +56,24 @@ const SignUpScreen = ({ navigation }) => {
   ));
 
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
-      <View style={styles.container}>
-        <Text style={{ fontSize: 32, textAlign: "center" }}>Registro</Text>
+    <MyLayout title="Registro">
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            {inputs}
+            <MyButton title="Registrarse" onPress={verifyData}></MyButton>
+          </View>
 
-        <View style={styles.inputContainer}>
-          {inputs}
-          <MyButton title="Registrarse" onPress={verifyData}></MyButton>
+          <MyLink
+            onPress={() => {
+              navigation.navigate("LogIn");
+            }}
+          >
+            Ya tengo una cuenta
+          </MyLink>
         </View>
-
-        <MyLink
-          onPress={() => {
-            navigation.navigate("LogIn");
-          }}
-        >
-          Ya tengo una cuenta
-        </MyLink>
-      </View>
-    </View>
+      </ScrollView>
+    </MyLayout>
   );
 };
 
