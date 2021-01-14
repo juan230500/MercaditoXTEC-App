@@ -16,7 +16,7 @@ import StockDetailScreen from "./containers/StockDetailScreen";
 
 const Drawer = createDrawerNavigator();
 const App = () => {
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   const [fontsLoaded] = useFonts({
     Roboto: require("./assets/fonts/RobotoCondensed-Bold.ttf"),
@@ -29,7 +29,7 @@ const App = () => {
     <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{ gestureEnabled: true }}
-        initialRouteName={isLogged ? "Profile" : "LogIn"}
+        initialRouteName={isLogged ? "Test" : "LogIn"}
         drawerContent={MyDrawer}
       >
         <Drawer.Screen name="LogIn" component={LogInScreen} />

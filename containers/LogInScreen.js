@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 
 import MyTextInput from "../components/MyTextInput";
 import MyButton from "../components/MyButton";
@@ -21,17 +21,42 @@ const styles = StyleSheet.create({
 
 const LogInScreen = ({ navigation }) => {
   const [formData, setFormData] = useState({
-    email: { display: "Correo XTEC", value: "" },
-    password: { display: "Contraseña XTEC", value: "" },
+    email: { display: "Correo XTEC", value: "", required: true, alert: false },
+    password: {
+      display: "Contraseña XTEC",
+      value: "",
+      required: true,
+      alert: false,
+    },
   });
 
   const verifyData = () => {
     const results = {};
+    const incompleteFields = [];
     for (let key in formData) {
+      if (formData[key].required && formData[key].value === "") {
+        incompleteFields.push(key);
+      }
       results[key] = formData[key].value;
     }
     console.log(results);
-    navigation.navigate("Profile");
+    if (incompleteFields.length > 0) {
+      activeAlerts(incompleteFields);
+    } else {
+      resetData();
+      navigation.navigate("Profile");
+    }
+  };
+
+  const resetData = () => {
+    const newFormData = { ...formData };
+    for (let key in newFormData) {
+      const newFormElement = { ...newFormData[key] };
+      newFormElement.alert = false;
+      newFormElement.value = "";
+      newFormData[key] = newFormElement;
+    }
+    setFormData(newFormData);
   };
 
   const inputChangeHandler = (value, key) => {
@@ -42,6 +67,17 @@ const LogInScreen = ({ navigation }) => {
     setFormData(newFormData);
   };
 
+  const activeAlerts = (keys) => {
+    const newFormData = { ...formData };
+    for (let key of keys) {
+      const newFormElement = { ...newFormData[key] };
+      newFormElement.alert = true;
+      newFormData[key] = newFormElement;
+    }
+    Alert.alert("¡Ups!", `Hay ${keys.length} campos obligatorios sin llenar`);
+    setFormData(newFormData);
+  };
+
   const inputs = Object.keys(formData).map((el) => (
     <MyTextInput
       key={el}
@@ -49,6 +85,7 @@ const LogInScreen = ({ navigation }) => {
       value={formData[el].value}
       onChange={(text) => inputChangeHandler(text, el)}
       password={el === "password"}
+      required={formData[el].alert}
     ></MyTextInput>
   ));
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 
 import { COLORS, FONT_SIZES } from "../constants";
@@ -26,11 +27,27 @@ const styles = StyleSheet.create({
     fontFamily: "Cabin",
     color: COLORS.grey,
   },
+  alert: {
+    color: "red",
+  },
 });
 
 const MyTextInput = (props) => {
+  const requiredStyle =
+    props.required && !props.value
+      ? {
+          borderColor: "red",
+          borderWidth: 2,
+        }
+      : null;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        ...requiredStyle,
+      }}
+    >
       <Text style={styles.label}>{props.label}:</Text>
       <TextInput
         value={props.value}
@@ -38,6 +55,7 @@ const MyTextInput = (props) => {
         onChangeText={props.onChange}
         secureTextEntry={props.password}
       ></TextInput>
+      {requiredStyle ? <Text style={styles.alert}>*Debe llenarse</Text> : null}
     </View>
   );
 };

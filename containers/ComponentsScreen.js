@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-import MyTextInput from "../components/MyTextInput";
-import MyButton from "../components/MyButton";
+import MyLink from "../components/MyLink";
+import MyLinkGroup from "../components/MyLinkGroup";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,25 +15,23 @@ const styles = StyleSheet.create({
 });
 
 const ComponentsScreen = ({ navigation }) => {
-  const [myData, setMyData] = useState({
-    name: "",
-    age: "",
-    address: "",
-  });
-
   return (
     <View style={styles.container}>
-      <MyTextInput label="name"></MyTextInput>
-      <MyTextInput label="age"></MyTextInput>
-      <MyTextInput label="address"></MyTextInput>
-      <MyButton
-        title="lol"
-        onPress={() => {
-          console.log(myData);
-          navigation.toggleDrawer();
-          navigation.openDrawer();
-        }}
-      ></MyButton>
+      <MyLinkGroup title="lol">
+        <MyLink onPress={() => navigation.navigate("LogIn")}>
+          Cerrar sesión
+        </MyLink>
+        <MyLink onPress={() => navigation.navigate("Profile")}>Perfil</MyLink>
+        <MyLink onPress={() => navigation.navigate("StockScreen")}>
+          Mi tienda
+        </MyLink>
+        <MyLink onPress={() => navigation.navigate("StockDetailScreen")}>
+          Mi tienda detalles (TEMPORAL)
+        </MyLink>
+        <MyLink onPress={() => navigation.navigate("Dashboard")}>
+          Estadísticas
+        </MyLink>
+      </MyLinkGroup>
     </View>
   );
 };
