@@ -29,7 +29,7 @@ const App = () => {
     <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{ gestureEnabled: true }}
-        initialRouteName={isLogged ? "Test" : "LogIn"}
+        initialRouteName={isLogged ? "Profile" : "LogIn"}
         drawerContent={MyDrawer}
       >
         <Drawer.Screen name="LogIn" component={LogInScreen} />

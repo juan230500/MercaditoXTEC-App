@@ -6,16 +6,16 @@ import { COLORS } from "../constants";
 
 const styles = StyleSheet.create({
   header: {
-    padding: 16,
-    paddingTop: 48,
+    padding: 12,
+    paddingTop: 32,
     backgroundColor: COLORS.primary,
-    flexDirection: "row",
   },
   text: {
     color: COLORS.white,
     fontSize: 32,
     fontWeight: "bold",
     marginHorizontal: 32,
+    textAlign: "center",
   },
   container1: {
     flex: 1,
@@ -43,6 +43,7 @@ const MyLayout = (props) => (
           name="bars"
           color="white"
           size={32}
+          style={{ position: "absolute", top: 32, left: 16 }}
         ></Icon>
       ) : null}
       <Text style={styles.text}>{props.title}</Text>
