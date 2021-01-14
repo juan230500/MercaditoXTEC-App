@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-import { COLORS } from "../constants";
+import { COLORS } from "../../constants";
 
 const styles = StyleSheet.create({
   link: {

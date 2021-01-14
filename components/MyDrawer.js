@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 
-import MyLink from "./MyLink";
-import MyLinkGroup from "../components/MyLinkGroup";
+import MyLink from "./UI/MyLink";
+import MyLinkGroup from "./UI/MyLinkGroup";
 
 const styles = StyleSheet.create({
   container: {

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 
-import { COLORS, FONT_SIZES } from "../constants";
+import { COLORS, FONT_SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
   container: {

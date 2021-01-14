@@ -6,7 +6,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
 
 import MyDrawer from "./components/MyDrawer";
-import ComponentsScreen from "./containers/ComponentsScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import DashboardScreen from "./containers/DashboardScreen";
 import LogInScreen from "./containers/LogInScreen";
@@ -34,7 +33,6 @@ const App = () => {
       >
         <Drawer.Screen name="LogIn" component={LogInScreen} />
         <Drawer.Screen name="SignUp" component={SignUpScreen} />
-        <Drawer.Screen name="Test" component={ComponentsScreen} />
         <Drawer.Screen name="Profile" component={ProfileScreen} />
         <Drawer.Screen name="Dashboard" component={DashboardScreen} />
         <Drawer.Screen name="StockScreen" component={StockScreen} />

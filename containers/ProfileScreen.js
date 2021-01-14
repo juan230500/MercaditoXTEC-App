@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import MyLayout from "../components/MyLayout";
-import MyButton from "../components/MyButton";
+import MyButton from "../components/UI/MyButton";
 import ProfileItem from "../components/ProfileItem";
 import { ScrollView } from "react-native-gesture-handler";
 
