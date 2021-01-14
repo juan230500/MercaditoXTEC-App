@@ -11,6 +11,8 @@ import ProfileScreen from "./containers/ProfileScreen";
 import DashboardScreen from "./containers/DashboardScreen";
 import LogInScreen from "./containers/LogInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
+import StockScreen from "./containers/StockScreen";
+import StockDetailScreen from "./containers/StockDetailScreen";
 
 const Drawer = createDrawerNavigator();
 const App = () => {
@@ -35,6 +37,8 @@ const App = () => {
         <Drawer.Screen name="Test" component={ComponentsScreen} />
         <Drawer.Screen name="Profile" component={ProfileScreen} />
         <Drawer.Screen name="Dashboard" component={DashboardScreen} />
+        <Drawer.Screen name="StockScreen" component={StockScreen} />
+        <Drawer.Screen name="StockDetailScreen" component={StockDetailScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -17,6 +17,12 @@ const MyDrawer = ({ navigation }) => {
         Cerrar sesión
       </MyLink>
       <MyLink onPress={() => navigation.navigate("Profile")}>Perfil</MyLink>
+      <MyLink onPress={() => navigation.navigate("StockScreen")}>
+        Mi tienda
+      </MyLink>
+      <MyLink onPress={() => navigation.navigate("StockDetailScreen")}>
+        Mi tienda detalles (TEMPORAL)
+      </MyLink>
       <MyLink onPress={() => navigation.navigate("Dashboard")}>
         Estadísticas
       </MyLink>
