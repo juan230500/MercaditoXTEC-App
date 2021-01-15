@@ -32,7 +32,7 @@ const GenericForm = (props) => {
         `Hay ${incompleteFields.length} campos obligatorios sin llenar`
       );
     } else {
-      resetData();
+      if (props.reset) resetData();
       props.onComplete(results);
     }
   };

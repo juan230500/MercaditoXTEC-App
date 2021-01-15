@@ -3,15 +3,14 @@ import { StyleSheet, Text, View } from "react-native";
 
 import MyLayout from "../components/MyLayout";
 import MyButton from "../components/UI/MyButton";
-import ProfileItem from "../components/ProfileItem";
-import { ScrollView } from "react-native-gesture-handler";
+import GenericItem from "../components/GenericItem";
+import GenericForm from "../components/GenericForm";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    padding: 16,
   },
-  buttonContainer: {},
 });
 
 const ProfileScreen = ({ navigation }) => {
@@ -19,75 +18,50 @@ const ProfileScreen = ({ navigation }) => {
     name: {
       display: "Nombre completo",
       value: "test",
+      required: true,
     },
-    phone: { display: "Teléfono", value: "test" },
-    address: { display: "Dirección", value: "test" },
-    email: { display: "Correo XTEC", value: "test" },
+    phone: { display: "Teléfono", value: "test", required: true },
+    address: { display: "Dirección", value: "test", required: true },
+    email: { display: "Correo XTEC", value: "test", required: true },
     password: {
       display: "Contraseña XTEC",
       value: "test",
+      required: true,
     },
   });
 
-  const [edit, setEdit] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const inputChangeHandler = (value, key) => {
-    const newData = { ...data };
-    const newElement = { ...newData[key] };
-    newElement.value = value;
-    newData[key] = newElement;
-    setData(newData);
-  };
+  let content = null;
+  if (isEditing) {
+    content = (
+      <GenericForm
+        onComplete={(r) => {
+          console.log(r);
+          setIsEditing(false);
+        }}
+        formData={data}
+        setFormData={setData}
+      ></GenericForm>
+    );
+  } else {
+    const items = Object.keys(data).map((key) => (
+      <GenericItem
+        key={key}
+        label={data[key].display}
+        value={data[key].value}
+      ></GenericItem>
+    ));
 
-  const verifyData = () => {
-    const results = {};
-    for (let key in data) {
-      results[key] = data[key].value;
-    }
-    console.log(results);
-  };
-
-  const items = Object.keys(data).map((key) => (
-    <ProfileItem
-      key={key}
-      label={data[key].display}
-      value={data[key].value}
-      onChange={(text) => inputChangeHandler(text, key)}
-      edit={edit}
-    ></ProfileItem>
-  ));
+    content = [
+      ...items,
+      <MyButton onPress={() => setIsEditing(true)} title="Editar"></MyButton>,
+    ];
+  }
 
   return (
     <MyLayout title="Configuración" onPressDrawer={navigation.openDrawer}>
-      <ScrollView>
-        <View style={styles.container}>
-          {items}
-          <View style={styles.buttonContainer}>
-            {edit ? (
-              [
-                <MyButton
-                  key="1"
-                  title="Cancelar"
-                  onPress={() => {
-                    console.log("dasdsa");
-                    setEdit(false);
-                  }}
-                ></MyButton>,
-                <MyButton
-                  key="2"
-                  title="Confirmar"
-                  onPress={() => {
-                    verifyData();
-                    setEdit(false);
-                  }}
-                ></MyButton>,
-              ]
-            ) : (
-              <MyButton onPress={() => setEdit(true)} title="Editar"></MyButton>
-            )}
-          </View>
-        </View>
-      </ScrollView>
+      <View style={styles.container}>{content}</View>
     </MyLayout>
   );
 };
