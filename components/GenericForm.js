@@ -65,6 +65,8 @@ const GenericForm = (props) => {
       onChange={(text) => inputChangeHandler(text, el)}
       password={el === "password"}
       required={missingFields.includes(el)}
+      options={props.formData[el].options}
+      number={props.formData[el].number}
     ></MyTextInput>
   ));
 

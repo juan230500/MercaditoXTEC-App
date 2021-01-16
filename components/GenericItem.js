@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { COLORS } from "../constants";
+import MyButton from "./UI/MyButton";
+import SmallButton from "./UI/SmallButton";
 
 const styles = StyleSheet.create({
   container: {
@@ -20,20 +22,30 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: "30%",
-    padding: 16,
+    padding: 8,
     backgroundColor: COLORS.primary,
   },
   textContainer: {
-    padding: 16,
-    justifyContent: "center",
+    padding: 8,
     flex: 1,
+    flexDirection: "row",
   },
   text: {
+    fontSize: 16,
     fontFamily: "Cabin",
   },
 });
 
 const GenericItem = (props) => {
+  const buttons = props.buttons
+    ? props.buttons.map((el) => (
+        <SmallButton
+          key={el.title}
+          title={el.title}
+          onPress={el.onPress}
+        ></SmallButton>
+      ))
+    : null;
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -43,6 +55,7 @@ const GenericItem = (props) => {
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.text}>{props.value}</Text>
+        {buttons}
       </View>
     </View>
   );

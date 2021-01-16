@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -30,27 +31,30 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyLayout = (props) => (
-  <View
-    style={{
-      flex: 1,
-    }}
-  >
-    <View style={styles.header}>
-      {props.onPressDrawer ? (
-        <Icon
-          onPress={props.onPressDrawer}
-          name="bars"
-          color="white"
-          size={32}
-          style={{ position: "absolute", top: 32, left: 16 }}
-        ></Icon>
-      ) : null}
-      <Text style={styles.text}>{props.title}</Text>
+const MyLayout = (props) => {
+  const navigation = useNavigation();
+  return (
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={styles.header}>
+        {props.drawer ? (
+          <Icon
+            onPress={navigation.openDrawer}
+            name="bars"
+            color="white"
+            size={32}
+            style={{ position: "absolute", top: 32, left: 16 }}
+          ></Icon>
+        ) : null}
+        <Text style={styles.text}>{props.title}</Text>
+      </View>
+      <View style={styles.container1}>
+        <View style={styles.container2}>{props.children}</View>
+      </View>
     </View>
-    <View style={styles.container1}>
-      <View style={styles.container2}>{props.children}</View>
-    </View>
-  </View>
-);
+  );
+};
 export default MyLayout;

@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 import { COLORS, FONT_SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    padding: 8,
     margin: 8,
     borderRadius: 8,
     borderWidth: 1,
@@ -40,6 +41,27 @@ const MyTextInput = (props) => {
         }
       : null;
 
+  let input = props.options ? (
+    <Picker
+      selectedValue={props.value}
+      itemStyle={{ backgroundColor: "red" }}
+      onValueChange={(itemValue, itemIndex) => props.onChange(itemValue)}
+    >
+      {props.options.map((el) => (
+        <Picker.Item key={el.value} label={el.label} value={el.value} />
+      ))}
+    </Picker>
+  ) : (
+    <TextInput
+      value={props.value}
+      style={styles.input}
+      onChangeText={props.onChange}
+      secureTextEntry={props.password}
+      keyboardType={props.number ? "numeric" : null}
+      multiline
+    ></TextInput>
+  );
+
   return (
     <View
       style={{
@@ -48,12 +70,7 @@ const MyTextInput = (props) => {
       }}
     >
       <Text style={styles.label}>{props.label}:</Text>
-      <TextInput
-        value={props.value}
-        style={styles.input}
-        onChangeText={props.onChange}
-        secureTextEntry={props.password}
-      ></TextInput>
+      {input}
       {requiredStyle ? <Text style={styles.alert}>*Debe llenarse</Text> : null}
     </View>
   );

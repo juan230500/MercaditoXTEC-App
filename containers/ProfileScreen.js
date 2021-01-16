@@ -55,12 +55,16 @@ const ProfileScreen = ({ navigation }) => {
 
     content = [
       ...items,
-      <MyButton onPress={() => setIsEditing(true)} title="Editar"></MyButton>,
+      <MyButton
+        key="1"
+        onPress={() => setIsEditing(true)}
+        title="Editar"
+      ></MyButton>,
     ];
   }
 
   return (
-    <MyLayout title="Configuración" onPressDrawer={navigation.openDrawer}>
+    <MyLayout title="Configuración" drawer>
       <View style={styles.container}>{content}</View>
     </MyLayout>
   );

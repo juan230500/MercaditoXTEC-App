@@ -12,6 +12,9 @@ import LogInScreen from "./containers/LogInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import StockScreen from "./containers/StockScreen";
 import StockDetailScreen from "./containers/StockDetailScreen";
+import MarketScreen from "./containers/MarketScreen";
+import OffertServiceScreen from "./containers/OffertServiceScreen";
+import OffertProductScreen from "./containers/OffertProductScreen";
 
 const Drawer = createDrawerNavigator();
 const App = () => {
@@ -35,8 +38,11 @@ const App = () => {
         <Drawer.Screen name="SignUp" component={SignUpScreen} />
         <Drawer.Screen name="Profile" component={ProfileScreen} />
         <Drawer.Screen name="Dashboard" component={DashboardScreen} />
-        <Drawer.Screen name="StockScreen" component={StockScreen} />
-        <Drawer.Screen name="StockDetailScreen" component={StockDetailScreen} />
+        <Drawer.Screen name="Stock" component={StockScreen} />
+        <Drawer.Screen name="StockDetail" component={StockDetailScreen} />
+        <Drawer.Screen name="Market" component={MarketScreen} />
+        <Drawer.Screen name="OffertService" component={OffertServiceScreen} />
+        <Drawer.Screen name="OffertProduct" component={OffertProductScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

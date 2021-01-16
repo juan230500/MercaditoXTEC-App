@@ -25,22 +25,26 @@ const MyDrawer = ({ navigation }) => {
           <MyLink onPress={() => navigation.navigate("Dashboard")}>
             Estadísticas
           </MyLink>
-          <MyLink onPress={() => navigation.navigate("StockScreen")}>
+          <MyLink onPress={() => navigation.navigate("Stock")}>
             Mi tienda
           </MyLink>
-          <MyLink onPress={() => navigation.navigate("StockDetailScreen")}>
+          <MyLink onPress={() => navigation.navigate("StockDetail")}>
             Mi tienda detalles (TEMPORAL)
           </MyLink>
           <MyLink>Mis compras</MyLink>
           <MyLink>Mis evaluaciones</MyLink>
         </MyLinkGroup>
         <MyLinkGroup title="Publicar">
-          <MyLink>Vender producto</MyLink>
-          <MyLink>Vender servcio</MyLink>
+          <MyLink onPress={() => navigation.navigate("OffertProduct")}>
+            Vender producto
+          </MyLink>
+          <MyLink onPress={() => navigation.navigate("OffertService")}>
+            Vender servicio
+          </MyLink>
           <MyLink>Publicar tutoría</MyLink>
           <MyLink>Vender práctica</MyLink>
         </MyLinkGroup>
-        <MyLink>Mercado</MyLink>
+        <MyLink onPress={() => navigation.navigate("Market")}>Mercado</MyLink>
         <MyLink>Tutorías</MyLink>
         <MyLink>Ofertas de empleo</MyLink>
       </View>
