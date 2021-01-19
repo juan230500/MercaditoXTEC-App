@@ -11,40 +11,47 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyDrawer = ({ navigation }) => {
+const MyDrawer = (props) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <MyLink onPress={() => navigation.navigate("LogIn")}>
+        <MyLink
+          onPress={() => {
+            props.navigation.navigate("LogIn");
+          }}
+          logout
+        >
           Cerrar sesión
         </MyLink>
         <MyLinkGroup title="Mi perfil">
-          <MyLink onPress={() => navigation.navigate("Profile")}>
+          <MyLink onPress={() => props.navigation.navigate("Profile")}>
             Configuración
           </MyLink>
-          <MyLink onPress={() => navigation.navigate("Dashboard")}>
+          <MyLink onPress={() => props.navigation.navigate("Dashboard")}>
             Estadísticas
           </MyLink>
-          <MyLink onPress={() => navigation.navigate("Stock")}>
+          <MyLink onPress={() => props.navigation.navigate("Stock")}>
             Mi tienda
           </MyLink>
-          <MyLink onPress={() => navigation.navigate("StockDetail")}>
+          <MyLink onPress={() => props.navigation.navigate("StockDetail")}>
             Mi tienda detalles (TEMPORAL)
           </MyLink>
           <MyLink>Mis compras</MyLink>
           <MyLink>Mis evaluaciones</MyLink>
         </MyLinkGroup>
         <MyLinkGroup title="Publicar">
-          <MyLink onPress={() => navigation.navigate("OffertProduct")}>
+          <MyLink onPress={() => props.navigation.navigate("OffertProduct")}>
             Vender producto
           </MyLink>
-          <MyLink onPress={() => navigation.navigate("OffertService")}>
+          <MyLink onPress={() => props.navigation.navigate("OffertService")}>
             Vender servicio
           </MyLink>
           <MyLink>Publicar tutoría</MyLink>
           <MyLink>Vender práctica</MyLink>
         </MyLinkGroup>
-        <MyLink onPress={() => navigation.navigate("Market")}>Mercado</MyLink>
+        <MyLink onPress={() => props.navigation.navigate("Market")}>
+          Mercado
+        </MyLink>
         <MyLink>Tutorías</MyLink>
         <MyLink>Ofertas de empleo</MyLink>
       </View>

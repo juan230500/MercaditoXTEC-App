@@ -58,7 +58,6 @@ const MyTextInput = (props) => {
       onChangeText={props.onChange}
       secureTextEntry={props.password}
       keyboardType={props.number ? "numeric" : null}
-      multiline
     ></TextInput>
   );
 

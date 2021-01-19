@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { COLORS } from "../constants";
@@ -52,7 +52,18 @@ const MyLayout = (props) => {
         <Text style={styles.text}>{props.title}</Text>
       </View>
       <View style={styles.container1}>
-        <View style={styles.container2}>{props.children}</View>
+        <View style={styles.container2}>
+          {props.loading ? (
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <ActivityIndicator
+                size="large"
+                color={COLORS.primary}
+              ></ActivityIndicator>
+            </View>
+          ) : (
+            props.children
+          )}
+        </View>
       </View>
     </View>
   );

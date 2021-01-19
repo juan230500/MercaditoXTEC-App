@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Alert, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  ScrollView,
+  TextInput,
+} from "react-native";
+import { connect } from "react-redux";
 
-import MyTextInput from "../components/UI/MyTextInput";
-import MyButton from "../components/UI/MyButton";
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
+import { BASE_URL } from "../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,35 +21,40 @@ const styles = StyleSheet.create({
   },
 });
 
-const LogInScreen = ({ navigation }) => {
+const LogInScreen = (props) => {
   const [formData, setFormData] = useState({
     email: { display: "Correo XTEC", value: "", required: true },
     password: { display: "Contraseña XTEC", value: "", required: true },
   });
 
-  const inputs = Object.keys(formData).map((el) => (
-    <MyTextInput
-      key={el}
-      label={formData[el].display}
-      value={formData[el].value}
-      onChange={(text) => inputChangeHandler(text, el)}
-      password={el === "password"}
-      required={formData[el].alert}
-    ></MyTextInput>
-  ));
+  const postUser = async (user) => {
+    try {
+      let response = await fetch(BASE_URL + "/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      let json = await response.json();
+      console.log("[NETWORK]", json);
+      if (json.auth) {
+        props.setLogged(true, json.auth);
+        props.navigation.navigate("Market");
+        console.log("[NETWORK]", "AUTHORIZED");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <MyLayout title="Registro">
+    <MyLayout title="Ingreso">
       <View style={styles.container}>
         <ScrollView>
           <GenericForm
-            actions={[
-              {
-                title: "Cancelar",
-                onPress: () => console.log("###"),
-              },
-            ]}
-            onComplete={(r) => console.log(r)}
+            onComplete={(result) => postUser(result)}
             formData={formData}
             setFormData={setFormData}
           ></GenericForm>
@@ -50,14 +62,25 @@ const LogInScreen = ({ navigation }) => {
 
         <MyLink
           onPress={() => {
-            navigation.navigate("SignUp");
+            props.navigation.navigate("SignUp");
           }}
         >
-          Ya tengo una cuenta
+          No tengo una cuenta
         </MyLink>
       </View>
     </MyLayout>
   );
 };
 
-export default LogInScreen;
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLogged: (logged, token) =>
+      dispatch({ type: "SET_LOGGED", logged: logged, token: token }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);

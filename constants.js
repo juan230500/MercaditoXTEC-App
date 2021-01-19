@@ -12,3 +12,5 @@ export const FONT_SIZES = {
   medium: 20,
   big: 32,
 };
+
+export const BASE_URL = "http://0a21918660e3.ngrok.io";

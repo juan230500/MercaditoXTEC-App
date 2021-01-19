@@ -1,11 +1,12 @@
-import React from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Alert, ScrollView } from "react-native";
+import { connect } from "react-redux";
 
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
+import HelpModal from "../components/HelpModal";
 import GenericForm from "../components/GenericForm";
-import { useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { BASE_URL } from "../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = (props) => {
   const [formData, setFormData] = useState({
     name: { display: "Nombre Completo", value: "", required: true },
     phone: { display: "Teléfono", value: "", required: true },
@@ -23,12 +24,34 @@ const SignUpScreen = ({ navigation }) => {
     password: { display: "Contraseña XTEC", value: "", required: true },
   });
 
+  const postUser = async (user) => {
+    try {
+      let response = await fetch(BASE_URL + "/signup", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      let json = await response.json();
+      console.log("[NETWORK]", json);
+      if (json.auth) {
+        props.setLogged(true, json.auth);
+        props.navigation.navigate("Market");
+        console.log("[NETWORK]", "AUTHORIZED");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <MyLayout title="Registro">
       <View style={styles.container}>
         <ScrollView>
           <GenericForm
-            onComplete={(r) => console.log(r)}
+            onComplete={(result) => postUser(result)}
             formData={formData}
             setFormData={setFormData}
           ></GenericForm>
@@ -36,7 +59,7 @@ const SignUpScreen = ({ navigation }) => {
 
         <MyLink
           onPress={() => {
-            navigation.navigate("LogIn");
+            props.navigation.navigate("LogIn");
           }}
         >
           Ya tengo una cuenta
@@ -46,4 +69,15 @@ const SignUpScreen = ({ navigation }) => {
   );
 };
 
-export default SignUpScreen;
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLogged: (logged, token) =>
+      dispatch({ type: "SET_LOGGED", logged: logged, token: token }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);

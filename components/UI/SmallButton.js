@@ -6,8 +6,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.accent,
     padding: 4,
-    borderRadius: 8,
-    marginHorizontal: 4,
+    margin: 2,
   },
 });
 
@@ -17,7 +16,7 @@ const SmallButton = (props) => {
       <View style={styles.container}>
         <Text
           style={{
-            fontSize: 12,
+            fontSize: 8,
             fontWeight: "bold",
             textAlign: "center",
           }}
