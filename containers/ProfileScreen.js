@@ -26,15 +26,15 @@ const ProfileScreen = (props) => {
   const [data, setData] = useState({
     name: {
       display: "Nombre completo",
-      value: "",
+      value: "1",
       required: true,
     },
-    phone: { display: "Teléfono", value: "", required: true },
-    address: { display: "Dirección", value: "", required: true },
-    email: { display: "Correo XTEC", value: "", required: true },
+    phone: { display: "Teléfono", value: "2", required: true },
+    address: { display: "Dirección", value: "3", required: true },
+    email: { display: "Correo XTEC", value: "4", required: true },
     password: {
       display: "Contraseña XTEC",
-      value: "",
+      value: "5",
       required: true,
     },
   });
@@ -118,7 +118,6 @@ const ProfileScreen = (props) => {
   return (
     <MyLayout title="Configuración" drawer loading={loading}>
       <ScrollView>
-        <MyButton title="tasd" onPress={getUser}></MyButton>
         <View style={styles.container}>{content}</View>
       </ScrollView>
     </MyLayout>

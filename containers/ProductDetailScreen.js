@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { connect } from "react-redux";
 
 import MyLayout from "../components/MyLayout";
 import MyButton from "../components/UI/MyButton";
@@ -40,4 +41,15 @@ const ProductDetailScreen = ({ navigation, route }) => {
   );
 };
 
-export default ProductDetailScreen;
+const mapStateToProps = (state) => {
+  return { token: state.token };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductDetailScreen);

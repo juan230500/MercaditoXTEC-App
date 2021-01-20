@@ -4,16 +4,20 @@ import { connect } from "react-redux";
 
 import { BASE_URL } from "../constants";
 import MyLayout from "../components/MyLayout";
-import MyTextInput from "../components/UI/MyTextInput";
-import GenericForm from "../components/GenericForm";
+import SmallInput from "../components/UI/SmallInput";
 import GenericItem from "../components/GenericItem";
 import MyButton from "../components/UI/MyButton";
 import { useEffect } from "react";
+import { set } from "react-native-reanimated";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 8,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
 
@@ -22,79 +26,126 @@ const MarketScreen = (props) => {
   const [data, setData] = useState({
     order: {
       display: "Ordernar por...",
-      value: "price",
+      value: "alpha",
+      icon: "sort",
       options: [
         { label: "Precio", value: "price" },
         { label: "Calificación", value: "eval" },
+        { label: "Alfabético", value: "alpha" },
       ],
     },
     product: {
       display: "Producto/Servicio",
-      value: "product",
+      value: "",
+      icon: "shopping-bag",
       options: [
         { label: "Producto", value: "product" },
         { label: "Servicio", value: "service" },
-        { label: "Ambos", value: "both" },
+        { label: "Ambos", value: "" },
       ],
     },
     search: {
       display: "Buscar por nombre",
       value: "",
+      icon: "search",
+    },
+    category: {
+      display: "Categoría",
+      value: "",
+      icon: "tag",
+      options: [
+        { label: "ninguna", value: "" },
+        { label: "cat1", value: "wtf" },
+        { label: "cat2", value: "wtf2" },
+      ],
     },
   });
-
-  const [filter, setFilter] = useState(false);
 
   const [loadedItems, setLoadedItems] = useState([
     {
       id: "123",
-      name: "shampoo",
+      name: "abc",
       price: 123,
       type: "product",
       eval: 3,
+      category: "wtf",
     },
     {
       id: "1234",
-      name: "shampoo2",
+      name: "efg",
       price: 321,
       type: "service",
       eval: 4.5,
+      category: "wtf",
     },
     {
       id: "12345",
-      name: "shampoo2",
+      name: "hij",
       price: 1,
       type: "service",
       eval: 5,
+      category: "wtf2",
     },
   ]);
 
   const [filteredItems, setFilteredItems] = useState([]);
 
   useEffect(() => {
-    getItems();
+    setFilteredItems(loadedItems);
+    //getItems();
   }, []);
 
-  const applyFilters = () => {
+  const setFilter = (value, key) => {
     let newItems = [...loadedItems];
-    newItems = newItems.filter((el) =>
-      el.name.toLowerCase().includes(data.search.value.toLowerCase())
-    );
-    if (data.product.value !== "both") {
-      newItems = newItems.filter((el) => el.type === data.product.value);
-    }
-    switch (data.order.value) {
-      case "price":
-        newItems = newItems.sort((a, b) => a.price - b.price);
+    let newFilters = { ...data };
+    let newFilter = { ...newFilters[key] };
+    newFilter.value = value;
+    newFilters[key] = newFilter;
+    setData(newFilters);
+    switch (key) {
+      case "order":
+        switch (value) {
+          case "price":
+            newItems = newItems.sort((a, b) => a.price - b.price);
+            break;
+          case "eval":
+            newItems = newItems.sort((a, b) => -a.eval + b.eval);
+            break;
+          case "alpha":
+            newItems = newItems.sort((a, b) => {
+              if (a.name < b.name) {
+                return -1;
+              }
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            });
+            break;
+
+          default:
+            break;
+        }
         break;
-      case "eval":
-        newItems = newItems.sort((a, b) => b.eval - a.eval);
+      case "search":
+        newItems = newItems.filter((el) =>
+          el.name.toLowerCase().includes(value.toLowerCase())
+        );
         break;
 
+      case "product":
+        newItems =
+          value !== "" ? newItems.filter((el) => el.type === value) : newItems;
+        break;
+      case "category":
+        newItems =
+          value !== ""
+            ? newItems.filter((el) => el.category === value)
+            : newItems;
+        break;
       default:
         break;
     }
-
     setFilteredItems(newItems);
   };
 
@@ -116,7 +167,6 @@ const MarketScreen = (props) => {
     } catch (error) {
       console.error(error);
     }
-
     setLoading(false);
   };
 
@@ -127,36 +177,34 @@ const MarketScreen = (props) => {
       value={`${el.eval}★ ${el.price}₡`}
       buttons={[
         {
-          title: "detalles",
+          icon: "info",
           onPress: () =>
             props.navigation.navigate("ProductDetail", {
               productId: el.id,
             }),
         },
-        { title: "chat", onPress: () => console.log("chat") },
+        { icon: "comments-dollar", onPress: () => console.log("chat") },
       ]}
     ></GenericItem>
+  ));
+
+  const inputs = Object.keys(data).map((el) => (
+    <SmallInput
+      key={el}
+      title={el}
+      icon={data[el].icon}
+      unset={data[el].value === ""}
+      label={data[el].display}
+      onChange={(text) => setFilter(text, el)}
+      {...data[el]}
+    ></SmallInput>
   ));
 
   return (
     <MyLayout title="Mercado" drawer loading={loading}>
       <ScrollView>
         <View style={styles.container}>
-          {filter ? (
-            <GenericForm
-              onComplete={(r) => {
-                applyFilters();
-                setFilter(false);
-              }}
-              formData={data}
-              setFormData={setData}
-            ></GenericForm>
-          ) : (
-            <MyButton
-              title="Filtrar"
-              onPress={() => setFilter(true)}
-            ></MyButton>
-          )}
+          <View style={styles.inputContainer}>{inputs}</View>
           {items}
         </View>
       </ScrollView>

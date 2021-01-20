@@ -44,7 +44,6 @@ const MyTextInput = (props) => {
   let input = props.options ? (
     <Picker
       selectedValue={props.value}
-      itemStyle={{ backgroundColor: "red" }}
       onValueChange={(itemValue, itemIndex) => props.onChange(itemValue)}
     >
       {props.options.map((el) => (

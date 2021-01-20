@@ -14,7 +14,6 @@ import SmallButton from "./UI/SmallButton";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.lightGrey,
-    margin: 8,
     marginTop: 16,
     borderRadius: 8,
     flexDirection: "row",
@@ -31,8 +30,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   text: {
+    textAlign: "center",
     fontSize: 16,
     fontFamily: "Cabin",
+  },
+  buttonContainer: {
+    padding: 8,
+    flexDirection: "row",
+    width: "35%",
   },
 });
 
@@ -40,8 +45,8 @@ const GenericItem = (props) => {
   const buttons = props.buttons
     ? props.buttons.map((el) => (
         <SmallButton
-          key={el.title}
-          title={el.title}
+          key={el.icon}
+          icon={el.icon}
           onPress={el.onPress}
         ></SmallButton>
       ))
@@ -55,8 +60,8 @@ const GenericItem = (props) => {
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.text}>{props.value}</Text>
-        {buttons}
       </View>
+      <View style={styles.buttonContainer}>{buttons}</View>
     </View>
   );
 };

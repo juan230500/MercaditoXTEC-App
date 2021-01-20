@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS, FONT_SIZES } from "../../constants";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,15 +15,14 @@ const SmallButton = (props) => {
   return (
     <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
       <View style={styles.container}>
-        <Text
+        <Icon
           style={{
-            fontSize: 8,
-            fontWeight: "bold",
             textAlign: "center",
           }}
-        >
-          {props.title.toUpperCase()}
-        </Text>
+          name={props.icon}
+          color="black"
+          size={16}
+        ></Icon>
       </View>
     </TouchableOpacity>
   );
