@@ -1,107 +1,106 @@
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React, {useState} from 'react';
 
-import MyLayout from "../components/MyLayout";
-import MyTextInput from "../components/UI/MyTextInput";
-import GenericForm from "../components/GenericForm";
-import GenericItem from "../components/GenericItem";
-import MyButton from "../components/UI/MyButton";
+import { ScrollView, Text, View } from "react-native";
+import { COLORS } from "../constants";
+//import products from '../products';
+import { StyleSheet} from 'react-native';
+import MyProduct from '../components/MyProduct';
+import MyLayout from '../components/MyLayout';
+import MyButton from '../components/UI/MyButton';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 8,
     backgroundColor: "#fff"
   },
+  wrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: "20px"
+  }
 });
 
-const POINTS = [
+
+const products = [
   {
-    qty: "puntos acumulados",
-  }];
+    name: 'Practica F2',
+    customer: 'Josue',
+    button: ['Detalles'],
+    type: 'Completado'
+  },
+  {
+    name: 'Rollos canela',
+    customer: 'Mariana',
+    button: ['Detalles']
+  },
+  {
+    name: 'Bolis',
+    customer: 'Sahid',
+    button: ['Detalles'],
+    type: 'Pendiente'
+  },
+  {
+    name: 'Apretados',
+    customer: 'Pedrito',
+    button: ['Detalles']
+  },
+  {
+      name: 'Coco rayado',
+      customer: 'Joel',
+      button: ['Gestionar', 'Chat']
+  }
+]; 
+
+function showButtons(text) {
+  const alertInformation = Object.entries(text.join(', '))
+    .map(information => `${information[0]}: ${information[1]}`)
+  alert(alertInformation)
+};
+
+
+const filterText = ['Completados','Pendientes', 'Publicaciones'];
+
+function StockScreen() {
   
+  const [filteredProducts, setData] = useState([]);
 
-const ITEMS = [
-  {
-    name: "practica 1",
-  },
-  {
-    name: "tutoria 1",
-  },
-  {
-    name: "producto 1",
-  },
-  {
-    name: "tutoria 2",
-  },
-  {
-    name: "producto 2",
-  },
-  {
-    name: "practica 2",
-  },
-];
-
-const StockScreen = ({ navigation }) => {
-  const [data, setData] = useState({
-    order: {
-      display: "Mostrar",
-      options: [
-        { label: "Completados", value: "complete" },
-        { label: "Pendientes", value: "pending" },
-        { label: "Publicaciones", value: "posts" },
-      ],
-    },
-    search: {
-      display: "Buscar por nombre",
-      value: "",
-    },
-  });
-
-  const [filter, setFilter] = useState(false);
+  const onPress= (props) => {
+    const filteredProducts = products.filter((item)=>{
+      return item == props;
+  })
+  setData(filteredProducts);
+  }
 
   return (
-    <MyLayout title="Mi tienda" drawer>
-      <ScrollView>
-        <View style={styles.container}>
-          {filter ? (
-            <GenericForm
-              onComplete={(r) => {
-                console.log(r);
-                setFilter(false);
-              }}
-              formData={data}
-              setFormData={setData}
-            ></GenericForm>
-          ) : (
+    <MyLayout title="STOCKSCREEN" drawer>
+      <ScrollView contentContainerStyle={styles.wrapper}>
+        <View flexDirection="row">
+          {filterText.map(option => (
             <MyButton
-              title="Filtrar"
-              onPress={() => setFilter(true)}
-            ></MyButton>
+            width="20%" 
+            flexDirection= 'row'
+            justifyContent= 'space-between'
+            title={option}
+            onPress={() => onPress(option.text)}/>
+          )
           )}
-          {ITEMS.map((el) => (
-            <GenericItem
-              key={el.name}
-              label={el.name}
-              value=""
-              buttons={[
-                { title: "detalles", onPress: () => console.log("detail") },
-                { title: "eliminar", onPress: () => console.log("delete") },
-                { title: "editar", onPress: () => console.log("edit") }
-              ]}
-            ></GenericItem>
-          ))}
         </View>
-        {POINTS.map((info) => (
-            <GenericItem
-              key={info.qty}
-              label={info.qty}
-              value=""
-            ></GenericItem>
-          ))}
+      {products.map(product => (
+        <MyProduct
+          key={product.name} 
+          name={product.name}
+          customer={product.customer}
+          buttonText={product.button}
+          showButtons={showButtons}
+        />
+        ))}
       </ScrollView>
     </MyLayout>
   );
-};
+}
+
+
 
 export default StockScreen;

@@ -4,7 +4,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
-
+import {Constants} from "expo-constants";
 import MyDrawer from "./components/MyDrawer";
 import ProfileScreen from "./containers/ProfileScreen";
 import DashboardScreen from "./containers/DashboardScreen";
