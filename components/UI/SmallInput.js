@@ -3,7 +3,7 @@ import { useState } from "react";
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import { COLORS } from "../../constants";
+import { COLORS } from "../../store/constants";
 import MyTextInput from "./MyTextInput";
 
 const styles = StyleSheet.create({

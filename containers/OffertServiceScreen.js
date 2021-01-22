@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Alert } from "react-native";
 import { connect } from "react-redux";
 
-import { BASE_URL } from "../constants";
+import { BASE_URL } from "../store/constants";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
 import { useState } from "react";

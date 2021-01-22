@@ -4,14 +4,13 @@ import { connect } from "react-redux";
 
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
-import HelpModal from "../components/HelpModal";
 import GenericForm from "../components/GenericForm";
-import { BASE_URL } from "../constants";
+import { request } from "../store/utils";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    padding: 16,
   },
 });
 
@@ -25,25 +24,7 @@ const SignUpScreen = (props) => {
   });
 
   const postUser = async (user) => {
-    try {
-      let response = await fetch(BASE_URL + "/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      let json = await response.json();
-      console.log("[NETWORK]", json);
-      if (json.auth) {
-        props.setLogged(true, json.auth);
-        props.navigation.navigate("Market");
-        console.log("[NETWORK]", "AUTHORIZED");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    request("/signup", "POST", user);
   };
 
   return (
@@ -55,15 +36,14 @@ const SignUpScreen = (props) => {
             formData={formData}
             setFormData={setFormData}
           ></GenericForm>
+          <MyLink
+            onPress={() => {
+              props.navigation.navigate("LogIn");
+            }}
+          >
+            Ya tengo una cuenta
+          </MyLink>
         </ScrollView>
-
-        <MyLink
-          onPress={() => {
-            props.navigation.navigate("LogIn");
-          }}
-        >
-          Ya tengo una cuenta
-        </MyLink>
       </View>
     </MyLayout>
   );

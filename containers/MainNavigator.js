@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { COLORS } from "../constants";
+import { COLORS } from "../store/constants";
 import { connect } from "react-redux";
 
-import { BASE_URL } from "../constants";
+import { BASE_URL } from "../store/constants";
 import MyDrawer from "../components/MyDrawer";
 import ProfileScreen from "./ProfileScreen";
 import DashboardScreen from "./DashboardScreen";

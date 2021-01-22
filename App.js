@@ -4,13 +4,11 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
-import { createStore } from "redux";
-import { Provider, connect } from "react-redux";
-import reducer from "./store/reducer";
+
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 import MainNavigator from "./containers/MainNavigator";
-
-const store = createStore(reducer);
 
 const App = () => {
   const [fontsLoaded] = useFonts({

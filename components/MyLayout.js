@@ -3,7 +3,7 @@ import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import { COLORS } from "../constants";
+import { COLORS } from "../store/constants";
 
 const styles = StyleSheet.create({
   header: {

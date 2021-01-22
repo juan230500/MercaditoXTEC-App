@@ -3,7 +3,7 @@ import { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-import { COLORS, FONT_SIZES } from "../../constants";
+import { COLORS, FONT_SIZES } from "../../store/constants";
 
 const styles = StyleSheet.create({
   container: {

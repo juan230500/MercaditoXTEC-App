@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
-import { BASE_URL } from "../constants";
+import { BASE_URL } from "../store/constants";
 
 const styles = StyleSheet.create({
   container: {

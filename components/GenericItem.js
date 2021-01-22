@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { COLORS } from "../constants";
+import { COLORS } from "../store/constants";
 import MyButton from "./UI/MyButton";
 import SmallButton from "./UI/SmallButton";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 
-import { BASE_URL } from "../constants";
+import { BASE_URL } from "../store/constants";
 import MyLayout from "../components/MyLayout";
 import MyButton from "../components/UI/MyButton";
 import GenericItem from "../components/GenericItem";

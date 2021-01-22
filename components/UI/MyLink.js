@@ -3,15 +3,16 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 
-import { COLORS } from "../../constants";
+import { COLORS } from "../../store/constants";
 
 const styles = StyleSheet.create({
   link: {
-    color: COLORS.primary,
+    color: COLORS.accent,
     textDecorationLine: "underline",
     margin: 0,
     fontSize: 16,
     fontFamily: "Cabin",
+    textAlign: "center",
   },
   container: {
     backgroundColor: COLORS.lightGrey,
