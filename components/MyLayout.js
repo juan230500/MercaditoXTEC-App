@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { connect } from "react-redux";
 
 import { COLORS } from "../store/constants";
 
@@ -62,7 +63,7 @@ const MyLayout = (props) => {
       </View>
       <View style={styles.container1}>
         <View style={styles.container2}>
-          {props.loading ? (
+          {props.load ? (
             <View style={{ flex: 1, justifyContent: "center" }}>
               <ActivityIndicator
                 size="large"
@@ -77,4 +78,13 @@ const MyLayout = (props) => {
     </View>
   );
 };
-export default MyLayout;
+
+const mapStateToProps = (state) => {
+  return { load: state.loading };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyLayout);

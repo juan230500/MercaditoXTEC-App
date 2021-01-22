@@ -24,7 +24,8 @@ const SignUpScreen = (props) => {
   });
 
   const postUser = async (user) => {
-    request("/signup", "POST", user);
+    await request("/signup", "POST", user);
+    props.navigation.navigate("Profile");
   };
 
   return (
@@ -36,13 +37,7 @@ const SignUpScreen = (props) => {
             formData={formData}
             setFormData={setFormData}
           ></GenericForm>
-          <MyLink
-            onPress={() => {
-              props.navigation.navigate("LogIn");
-            }}
-          >
-            Ya tengo una cuenta
-          </MyLink>
+          <MyLink to="LogIn">Ya tengo una cuenta</MyLink>
         </ScrollView>
       </View>
     </MyLayout>

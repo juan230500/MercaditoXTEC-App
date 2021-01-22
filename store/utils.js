@@ -1,8 +1,16 @@
 import { BASE_URL } from "./constants";
 import store from "./store";
+import { createRef } from "react";
+
+export const navigationRef = createRef();
+
+export const navigate = (name, params) => {
+  navigationRef.current?.navigate(name, params);
+};
 
 export const request = async (route, method, data) => {
   const token = store.getState().token;
+  store.dispatch({ type: "SET_LOADING", loading: true });
   try {
     let response = await fetch(BASE_URL + route, {
       method: method,
@@ -19,4 +27,5 @@ export const request = async (route, method, data) => {
   } catch (error) {
     console.error(error);
   }
+  store.dispatch({ type: "SET_LOADING", loading: false });
 };

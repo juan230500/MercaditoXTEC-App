@@ -28,6 +28,8 @@ import TutorialsScreen from "./TutorialsScreen";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useEffect } from "react";
 
+import { navigationRef } from "../store/utils";
+
 const Drawer = createDrawerNavigator();
 const MainNavigator = (props) => {
   useEffect(() => {
@@ -52,7 +54,7 @@ const MainNavigator = (props) => {
   };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Drawer.Navigator
         screenOptions={{ gestureEnabled: props.logged }}
         initialRouteName={props.logged ? "Profile" : "LogIn"}

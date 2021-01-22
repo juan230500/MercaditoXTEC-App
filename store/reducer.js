@@ -1,6 +1,7 @@
 const initialState = {
-  logged: true,
+  logged: false,
   token: "",
+  loading: false,
   categories: [
     { label: "calificacion1", value: "c1" },
     { label: "calificacion2", value: "c2" },
@@ -19,6 +20,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, categories: action.categories };
     case "SET_COURSES":
       return { ...state, courses: action.courses };
+    case "SET_LOADING":
+      return { ...state, loading: action.loading };
 
     default:
       return state;

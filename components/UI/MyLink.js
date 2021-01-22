@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 
 import { COLORS } from "../../store/constants";
+import { navigate } from "../../store/utils";
 
 const styles = StyleSheet.create({
   link: {
@@ -29,6 +30,9 @@ const MyLink = (props) => {
       props.onPress();
       props.setLogged(false, "");
     };
+  }
+  if (props.to) {
+    pressed = () => navigate(props.to);
   }
   return (
     <TouchableOpacity style={styles.container} onPress={pressed}>
