@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 8,
     flexDirection: "row",
-    width: "35%",
   },
 });
 

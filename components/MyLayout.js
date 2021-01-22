@@ -49,6 +49,15 @@ const MyLayout = (props) => {
             style={{ position: "absolute", top: 32, left: 16 }}
           ></Icon>
         ) : null}
+        {props.back ? (
+          <Icon
+            onPress={navigation.goBack}
+            name="arrow-left"
+            color="white"
+            size={32}
+            style={{ position: "absolute", top: 32, left: 16 }}
+          ></Icon>
+        ) : null}
         <Text style={styles.text}>{props.title}</Text>
       </View>
       <View style={styles.container1}>

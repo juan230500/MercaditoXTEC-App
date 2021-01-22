@@ -12,6 +12,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { COLORS } from "../constants";
 import { connect } from "react-redux";
 
+import { BASE_URL } from "../constants";
 import MyDrawer from "../components/MyDrawer";
 import ProfileScreen from "./ProfileScreen";
 import DashboardScreen from "./DashboardScreen";
@@ -23,23 +24,33 @@ import MarketScreen from "./MarketScreen";
 import OffertServiceScreen from "./OffertServiceScreen";
 import OffertProductScreen from "./OffertProductScreen";
 import ProductDetailScreen from "./ProductDetailScreen";
+import TutorialsScreen from "./TutorialsScreen";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { useEffect } from "react";
 
 const Drawer = createDrawerNavigator();
 const MainNavigator = (props) => {
-  if (props.loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          backgroundColor: COLORS.primary,
-        }}
-      >
-        <ActivityIndicator size={50} color={COLORS.accent}></ActivityIndicator>
-      </View>
-    );
-  }
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  const getCategories = async () => {
+    try {
+      let response = await fetch(BASE_URL + "/category", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: props.token,
+        },
+      });
+      let json = await response.json();
+      console.log("[NETWORK]", json);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -57,6 +68,7 @@ const MainNavigator = (props) => {
         <Drawer.Screen name="OffertService" component={OffertServiceScreen} />
         <Drawer.Screen name="OffertProduct" component={OffertProductScreen} />
         <Drawer.Screen name="ProductDetail" component={ProductDetailScreen} />
+        <Drawer.Screen name="Tutorials" component={TutorialsScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
@@ -65,12 +77,14 @@ const MainNavigator = (props) => {
 const mapStateToProps = (state) => {
   return {
     logged: state.logged,
-    loading: state.loading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setCategories: (categories) =>
+      dispatch({ type: "SET_CATEGORIES", categories: categories }),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainNavigator);

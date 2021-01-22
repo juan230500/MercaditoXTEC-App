@@ -21,9 +21,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const MarketScreen = (props) => {
+const TutorialsScreen = (props) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
+    search: {
+      display: "Buscar por nombre",
+      value: "",
+      icon: "search",
+    },
     order: {
       display: "Ordernar por...",
       value: "alpha",
@@ -35,25 +40,20 @@ const MarketScreen = (props) => {
       ],
     },
     product: {
-      display: "Producto/Servicio",
+      display: "Tutoría/Práctica",
       value: "",
       icon: "shopping-bag",
       options: [
-        { label: "Producto", value: "product" },
-        { label: "Servicio", value: "service" },
+        { label: "Tutoría", value: "tutorial" },
+        { label: "Práctica", value: "practice" },
         { label: "Ambos", value: "" },
       ],
     },
-    search: {
-      display: "Buscar por nombre",
-      value: "",
-      icon: "search",
-    },
     category: {
-      display: "Categoría",
+      display: "Cursos",
       value: "",
       icon: "tag",
-      options: props.categories,
+      options: props.courses,
     },
   });
 
@@ -61,26 +61,24 @@ const MarketScreen = (props) => {
     {
       id: "123",
       name: "abc",
+      type: "practice",
       price: 123,
-      type: "product",
       eval: 3,
-      category: "wtf",
+      category: "c1",
     },
     {
       id: "1234",
       name: "efg",
-      price: 321,
-      type: "service",
+      type: "tutorial",
       eval: 4.5,
-      category: "wtf",
+      category: "c2",
     },
     {
       id: "12345",
       name: "hij",
-      price: 1,
-      type: "service",
+      type: "tutorial",
       eval: 5,
-      category: "wtf2",
+      category: "c1",
     },
   ]);
 
@@ -170,7 +168,7 @@ const MarketScreen = (props) => {
     <GenericItem
       key={el.id}
       label={el.name}
-      value={`${el.eval}★ ${el.price}₡`}
+      value={`${el.eval}★ ${el.price ? el.price : "0"}₡`}
       buttons={[
         {
           icon: "info",
@@ -210,11 +208,11 @@ const MarketScreen = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { token: state.token, categories: state.categories };
+  return { token: state.token, courses: state.courses };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MarketScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TutorialsScreen);

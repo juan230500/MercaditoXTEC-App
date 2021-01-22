@@ -52,7 +52,9 @@ const MyDrawer = (props) => {
         <MyLink onPress={() => props.navigation.navigate("Market")}>
           Mercado
         </MyLink>
-        <MyLink>Tutorías</MyLink>
+        <MyLink onPress={() => props.navigation.navigate("Tutorials")}>
+          Tutorías
+        </MyLink>
         <MyLink>Ofertas de empleo</MyLink>
       </View>
     </ScrollView>

@@ -8,12 +8,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.accent,
     padding: 4,
     margin: 2,
+    width: 25,
+    height: 25,
   },
 });
 
 const SmallButton = (props) => {
   return (
-    <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress}>
       <View style={styles.container}>
         <Icon
           style={{
