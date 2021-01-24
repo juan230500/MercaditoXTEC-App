@@ -8,7 +8,7 @@ import { COLORS, FONT_SIZES } from "../../store/constants";
 const styles = StyleSheet.create({
   container: {
     padding: 8,
-    margin: 8,
+    marginVertical: 8,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: COLORS.grey,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     borderColor: COLORS.grey,
-    padding: 0,
+    padding: 8,
     margin: 0,
     fontSize: 20,
     fontFamily: "Cabin",

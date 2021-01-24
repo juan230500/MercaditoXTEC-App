@@ -25,6 +25,7 @@ const SignUpScreen = (props) => {
 
   const postUser = async (user) => {
     await request("/signup", "POST", user);
+    props.setLogged(true, "abc");
     props.navigation.navigate("Profile");
   };
 

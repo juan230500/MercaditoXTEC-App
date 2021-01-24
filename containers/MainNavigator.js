@@ -1,15 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useRef, useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import React, { useEffect } from "react";
+import {} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { COLORS } from "../store/constants";
 import { connect } from "react-redux";
 
 import { BASE_URL } from "../store/constants";
@@ -24,11 +17,10 @@ import MarketScreen from "./MarketScreen";
 import OffertServiceScreen from "./OffertServiceScreen";
 import OffertProductScreen from "./OffertProductScreen";
 import ProductDetailScreen from "./ProductDetailScreen";
-import TutorialsScreen from "./TutorialsScreen";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { useEffect } from "react";
+import HelpScreen from "./HelpScreen";
 
 import { navigationRef } from "../store/utils";
+import { request } from "../store/utils";
 
 const Drawer = createDrawerNavigator();
 const MainNavigator = (props) => {
@@ -37,29 +29,17 @@ const MainNavigator = (props) => {
   }, []);
 
   const getCategories = async () => {
-    try {
-      let response = await fetch(BASE_URL + "/category", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: props.token,
-        },
-      });
-      let json = await response.json();
-      console.log("[NETWORK]", json);
-    } catch (error) {
-      console.error(error);
-    }
+    await request("/category", "GET");
   };
 
   return (
     <NavigationContainer ref={navigationRef}>
       <Drawer.Navigator
         screenOptions={{ gestureEnabled: props.logged }}
-        initialRouteName={props.logged ? "Profile" : "LogIn"}
+        initialRouteName={props.logged ? "Market" : "LogIn"}
         drawerContent={MyDrawer}
       >
+        <Drawer.Screen name="Help" component={HelpScreen} />
         <Drawer.Screen name="LogIn" component={LogInScreen} />
         <Drawer.Screen name="SignUp" component={SignUpScreen} />
         <Drawer.Screen name="Profile" component={ProfileScreen} />
@@ -70,7 +50,6 @@ const MainNavigator = (props) => {
         <Drawer.Screen name="OffertService" component={OffertServiceScreen} />
         <Drawer.Screen name="OffertProduct" component={OffertProductScreen} />
         <Drawer.Screen name="ProductDetail" component={ProductDetailScreen} />
-        <Drawer.Screen name="Tutorials" component={TutorialsScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

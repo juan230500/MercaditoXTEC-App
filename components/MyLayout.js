@@ -7,74 +7,82 @@ import { connect } from "react-redux";
 import { COLORS } from "../store/constants";
 
 const styles = StyleSheet.create({
-  header: {
-    padding: 12,
-    paddingTop: 32,
+  container: {
+    flex: 1,
     backgroundColor: COLORS.primary,
+  },
+  header: {
+    padding: 0,
+    height: 75,
+    paddingTop: 32,
+    paddingBottom: 16,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
     color: COLORS.white,
     fontSize: 32,
     fontWeight: "bold",
-    marginHorizontal: 32,
     textAlign: "center",
+    width: "70%",
   },
-  container1: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
+  icon: {
+    width: "10%",
   },
-  container2: {
+  card: {
     flex: 1,
-    borderTopRightRadius: 32,
-    borderTopLeftRadius: 32,
-    overflow: "hidden",
     backgroundColor: COLORS.white,
+    elevation: 10,
+    borderTopRightRadius: 24,
+    borderTopLeftRadius: 24,
+    overflow: "hidden",
   },
 });
 
 const MyLayout = (props) => {
   const navigation = useNavigation();
+
+  const loading = (
+    <View style={{ flex: 1, justifyContent: "center" }}>
+      <ActivityIndicator
+        size="large"
+        color={COLORS.primary}
+      ></ActivityIndicator>
+    </View>
+  );
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={styles.container}>
       <View style={styles.header}>
-        {props.drawer ? (
-          <Icon
-            onPress={navigation.openDrawer}
-            name="bars"
-            color="white"
-            size={32}
-            style={{ position: "absolute", top: 32, left: 16 }}
-          ></Icon>
-        ) : null}
-        {props.back ? (
-          <Icon
-            onPress={navigation.goBack}
-            name="arrow-left"
-            color="white"
-            size={32}
-            style={{ position: "absolute", top: 32, left: 16 }}
-          ></Icon>
-        ) : null}
+        <View style={styles.icon}>
+          {props.drawer ? (
+            <Icon
+              onPress={navigation.openDrawer}
+              name="bars"
+              color="white"
+              size={32}
+            ></Icon>
+          ) : null}
+          {props.back ? (
+            <Icon
+              onPress={navigation.goBack}
+              name="arrow-left"
+              color="white"
+              size={32}
+            ></Icon>
+          ) : null}
+        </View>
         <Text style={styles.text}>{props.title}</Text>
-      </View>
-      <View style={styles.container1}>
-        <View style={styles.container2}>
-          {props.load ? (
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <ActivityIndicator
-                size="large"
-                color={COLORS.primary}
-              ></ActivityIndicator>
-            </View>
-          ) : (
-            props.children
-          )}
+        <View style={styles.icon}>
+          <Icon
+            onPress={() => navigation.navigate("Help")}
+            name="question-circle"
+            color="white"
+            size={32}
+          ></Icon>
         </View>
       </View>
+      <View style={styles.card}>{props.load ? loading : props.children}</View>
     </View>
   );
 };
@@ -83,8 +91,4 @@ const mapStateToProps = (state) => {
   return { load: state.loading };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyLayout);
+export default connect(mapStateToProps)(MyLayout);

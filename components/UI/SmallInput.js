@@ -14,17 +14,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    width: 50,
-    height: 50,
-    backgroundColor: COLORS.accent,
+    width: 40,
+    height: 40,
+    backgroundColor: COLORS.white,
     borderRadius: 64,
     alignContent: "center",
     justifyContent: "center",
-  },
-  unset: {
-    backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.accent,
+  },
+  active: {
+    backgroundColor: COLORS.accent,
+    borderWidth: 0,
   },
 });
 
@@ -32,12 +33,12 @@ const SmallInput = (props) => {
   const [opened, setOpened] = useState(false);
 
   let finalStyle = styles.container;
-  if (props.unset) {
-    finalStyle = { ...finalStyle, ...styles.unset };
+  if (props.value && props.value !== "") {
+    finalStyle = { ...finalStyle, ...styles.active };
   }
 
   return (
-    <View>
+    <View style={finalStyle}>
       <Modal transparent visible={opened}>
         <TouchableOpacity
           style={styles.modalBg}
@@ -55,7 +56,7 @@ const SmallInput = (props) => {
           </View>
         </TouchableOpacity>
       </Modal>
-      <TouchableOpacity style={finalStyle} onPress={() => setOpened(true)}>
+      <TouchableOpacity onPress={() => setOpened(true)}>
         <Icon
           style={{ textAlign: "center" }}
           name={props.icon}

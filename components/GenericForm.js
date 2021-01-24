@@ -1,15 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView, Alert } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 
 import MyTextInput from "./UI/MyTextInput";
 import MyButton from "./UI/MyButton";
-import MyLink from "./UI/MyLink";
 import { useState } from "react";
 
 const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-  },
+  container: {},
 });
 
 const GenericForm = (props) => {

@@ -8,7 +8,7 @@ export const navigate = (name, params) => {
   navigationRef.current?.navigate(name, params);
 };
 
-export const request = async (route, method, data) => {
+export const request = async (route, method, data = null) => {
   const token = store.getState().token;
   store.dispatch({ type: "SET_LOADING", loading: true });
   try {

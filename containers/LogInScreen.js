@@ -1,23 +1,16 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { connect } from "react-redux";
 
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
-import { BASE_URL } from "../store/constants";
+import { request } from "../store/utils";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    padding: 16,
   },
 });
 
@@ -28,25 +21,9 @@ const LogInScreen = (props) => {
   });
 
   const postUser = async (user) => {
-    try {
-      let response = await fetch(BASE_URL + "/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      let json = await response.json();
-      console.log("[NETWORK]", json);
-      if (json.auth) {
-        props.setLogged(true, json.auth);
-        props.navigation.navigate("Market");
-        console.log("[NETWORK]", "AUTHORIZED");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    await request("/login", "POST", user);
+    props.setLogged(true, "abc");
+    props.navigation.navigate("Profile");
   };
 
   return (
@@ -58,15 +35,8 @@ const LogInScreen = (props) => {
             formData={formData}
             setFormData={setFormData}
           ></GenericForm>
+          <MyLink to="SignUp">No tengo una cuenta</MyLink>
         </ScrollView>
-
-        <MyLink
-          onPress={() => {
-            props.navigation.navigate("SignUp");
-          }}
-        >
-          No tengo una cuenta
-        </MyLink>
       </View>
     </MyLayout>
   );

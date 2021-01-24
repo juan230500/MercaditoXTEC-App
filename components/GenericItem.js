@@ -14,7 +14,7 @@ import SmallButton from "./UI/SmallButton";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.lightGrey,
-    marginTop: 16,
+    marginVertical: 8,
     borderRadius: 8,
     flexDirection: "row",
     overflow: "hidden",

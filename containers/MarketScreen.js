@@ -2,171 +2,117 @@ import React, { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 
-import { BASE_URL } from "../store/constants";
 import MyLayout from "../components/MyLayout";
+import MyTextInput from "../components/UI/MyTextInput";
+import SearchBar from "../components/SearchBar";
 import SmallInput from "../components/UI/SmallInput";
+import CheckList from "../components/CheckList";
 import GenericItem from "../components/GenericItem";
-import MyButton from "../components/UI/MyButton";
 import { useEffect } from "react";
-import { set } from "react-native-reanimated";
+import { request } from "../store/utils";
+import MyButton from "../components/UI/MyButton";
+
+const ITEMS = [
+  {
+    id: "123",
+    name: "abc",
+    price: 123,
+    type: "product",
+    eval: 3,
+    category: "c1",
+  },
+  {
+    id: "1234",
+    name: "efg",
+    price: 321,
+    type: "service",
+    eval: 4.5,
+    category: "c2",
+  },
+  {
+    id: "12345",
+    name: "hij",
+    price: 1,
+    type: "service",
+    eval: 5,
+    category: "c1",
+  },
+  {
+    id: "123457",
+    name: "hij",
+    price: 1,
+    type: "job",
+    eval: 5,
+    category: "c1",
+  },
+  {
+    id: "123456",
+    name: "hij",
+    price: 1,
+    type: "tutorial",
+    eval: 5,
+    category: "c1",
+  },
+];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 8,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    padding: 16,
+    position: "relative",
   },
 });
 
 const MarketScreen = (props) => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({
-    order: {
-      display: "Ordernar por...",
-      value: "alpha",
-      icon: "sort",
-      options: [
-        { label: "Precio", value: "price" },
-        { label: "Calificación", value: "eval" },
-        { label: "Alfabético", value: "alpha" },
-      ],
-    },
-    product: {
-      display: "Producto/Servicio",
-      value: "",
+  const [options, setOptions] = useState([
+    {
+      display: "Productos",
+      value: "product",
+      selected: true,
       icon: "shopping-bag",
-      options: [
-        { label: "Producto", value: "product" },
-        { label: "Servicio", value: "service" },
-        { label: "Ambos", value: "" },
-      ],
     },
-    search: {
-      display: "Buscar por nombre",
-      value: "",
-      icon: "search",
-    },
-    category: {
-      display: "Categoría",
-      value: "",
-      icon: "tag",
-      options: props.categories,
-    },
-  });
-
-  const [loadedItems, setLoadedItems] = useState([
+    { display: "Servicios", value: "service", selected: true, icon: "tools" },
     {
-      id: "123",
-      name: "abc",
-      price: 123,
-      type: "product",
-      eval: 3,
-      category: "wtf",
+      display: "Tutorías",
+      value: "tutorial",
+      selected: false,
+      icon: "chalkboard-teacher",
     },
     {
-      id: "1234",
-      name: "efg",
-      price: 321,
-      type: "service",
-      eval: 4.5,
-      category: "wtf",
+      display: "Prácticas",
+      value: "practice",
+      selected: false,
+      icon: "book-open",
     },
     {
-      id: "12345",
-      name: "hij",
-      price: 1,
-      type: "service",
-      eval: 5,
-      category: "wtf2",
+      display: "Ofertas de empleo",
+      value: "job",
+      selected: false,
+      icon: "user-graduate",
     },
   ]);
 
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [loadedItems, setLoadedItems] = useState(ITEMS);
 
   useEffect(() => {
-    setFilteredItems(loadedItems);
     getItems();
   }, []);
 
-  const setFilter = (value, key) => {
-    let newItems = [...loadedItems];
-    let newFilters = { ...data };
-    let newFilter = { ...newFilters[key] };
-    newFilter.value = value;
-    newFilters[key] = newFilter;
-    setData(newFilters);
-    switch (key) {
-      case "order":
-        switch (value) {
-          case "price":
-            newItems = newItems.sort((a, b) => a.price - b.price);
-            break;
-          case "eval":
-            newItems = newItems.sort((a, b) => -a.eval + b.eval);
-            break;
-          case "alpha":
-            newItems = newItems.sort((a, b) => {
-              if (a.name < b.name) {
-                return -1;
-              }
-              if (a.name > b.name) {
-                return 1;
-              }
-              return 0;
-            });
-            break;
-
-          default:
-            break;
-        }
-        break;
-      case "search":
-        newItems = newItems.filter((el) =>
-          el.name.toLowerCase().includes(value.toLowerCase())
-        );
-        break;
-
-      case "product":
-        newItems =
-          value !== "" ? newItems.filter((el) => el.type === value) : newItems;
-        break;
-      case "category":
-        newItems =
-          value !== ""
-            ? newItems.filter((el) => el.category === value)
-            : newItems;
-        break;
-      default:
-        break;
-    }
-    setFilteredItems(newItems);
-  };
-
   const getItems = async () => {
-    setLoading(true);
-    try {
-      let response = await fetch(BASE_URL + "/market", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: props.token,
-        },
-      });
-      let json = await response.json();
-      console.log("[NETWORK]", json);
-      setLoadedItems(json);
-      setFilteredItems(json);
-    } catch (error) {
-      console.error(error);
-    }
-    setLoading(false);
+    await request("/market", "GET");
   };
 
-  const items = filteredItems.map((el) => (
+  const filtered = (items) => {
+    const validOptions = options
+      .filter((el) => el.selected)
+      .map((el) => el.value);
+    let newItems = [...items];
+    newItems = newItems.filter((el) => validOptions.includes(el.type));
+
+    return newItems;
+  };
+
+  const items = filtered(loadedItems).map((el) => (
     <GenericItem
       key={el.id}
       label={el.name}
@@ -185,36 +131,19 @@ const MarketScreen = (props) => {
     ></GenericItem>
   ));
 
-  const inputs = Object.keys(data).map((el) => (
-    <SmallInput
-      key={el}
-      title={el}
-      icon={data[el].icon}
-      unset={data[el].value === ""}
-      label={data[el].display}
-      onChange={(text) => setFilter(text, el)}
-      {...data[el]}
-    ></SmallInput>
-  ));
-
   return (
-    <MyLayout title="Mercado" drawer loading={loading}>
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.inputContainer}>{inputs}</View>
-          {items}
-        </View>
-      </ScrollView>
+    <MyLayout title="Mercado" drawer>
+      <View style={styles.container}>
+        <SearchBar></SearchBar>
+        <CheckList options={options} setOptions={setOptions}></CheckList>
+
+        <ScrollView>{items}</ScrollView>
+      </View>
     </MyLayout>
   );
 };
 
 const mapStateToProps = (state) => {
-  return { token: state.token, categories: state.categories };
+  return { categories: state.categories };
 };
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MarketScreen);
+export default connect(mapStateToProps)(MarketScreen);
