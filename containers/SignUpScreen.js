@@ -25,7 +25,7 @@ const SignUpScreen = (props) => {
 
   const postUser = async (user) => {
     await request("/signup", "POST", user);
-    props.setLogged(true, "abc");
+    await utils.saveToken("abc");
     props.navigation.navigate("Profile");
   };
 
@@ -50,10 +50,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setLogged: (logged, token) =>
-      dispatch({ type: "SET_LOGGED", logged: logged, token: token }),
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);

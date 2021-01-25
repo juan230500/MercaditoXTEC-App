@@ -1,6 +1,7 @@
 import { BASE_URL } from "./constants";
 import store from "./store";
 import { createRef } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const navigationRef = createRef();
 
@@ -28,4 +29,28 @@ export const request = async (route, method, data = null) => {
     console.error(error);
   }
   store.dispatch({ type: "SET_LOADING", loading: false });
+};
+
+export const saveToken = async (token) => {
+  store.dispatch({ type: "SET_TOKEN", token: token });
+  store.dispatch({ type: "SET_LOADING", loading: true });
+  try {
+    await AsyncStorage.setItem("token", token || "");
+  } catch (e) {
+    // saving error
+  }
+  store.dispatch({ type: "SET_LOADING", loading: false });
+};
+
+export const fetchToken = async () => {
+  store.dispatch({ type: "SET_LOADING", loading: true });
+  let value = null;
+  try {
+    value = await AsyncStorage.getItem("token");
+    value && store.dispatch({ type: "SET_TOKEN", token: value });
+  } catch (e) {
+    // error reading value
+  }
+  store.dispatch({ type: "SET_LOADING", loading: false });
+  return value;
 };

@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
-import { request } from "../store/utils";
+import * as utils from "../store/utils";
+import MyButton from "../components/UI/MyButton";
+import { useEffect } from "react";
 
 const styles = StyleSheet.create({
   container: {
@@ -20,9 +22,18 @@ const LogInScreen = (props) => {
     password: { display: "Contraseña XTEC", value: "", required: true },
   });
 
+  useEffect(() => {
+    const fetch = async () => {
+      const token = await utils.fetchToken();
+      console.log("[LOGIN]", token);
+      token && props.navigation.navigate("Profile");
+    };
+    fetch();
+  }, []);
+
   const postUser = async (user) => {
-    await request("/login", "POST", user);
-    props.setLogged(true, "abc");
+    await utils.request("/login", "POST", user);
+    await utils.saveToken("abc");
     props.navigation.navigate("Profile");
   };
 
@@ -47,10 +58,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setLogged: (logged, token) =>
-      dispatch({ type: "SET_LOGGED", logged: logged, token: token }),
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);

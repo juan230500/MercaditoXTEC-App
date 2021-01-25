@@ -1,11 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import {} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { connect } from "react-redux";
 
-import { BASE_URL } from "../store/constants";
 import MyDrawer from "../components/MyDrawer";
 import ProfileScreen from "./ProfileScreen";
 import DashboardScreen from "./DashboardScreen";
@@ -19,8 +17,7 @@ import OffertProductScreen from "./OffertProductScreen";
 import ProductDetailScreen from "./ProductDetailScreen";
 import HelpScreen from "./HelpScreen";
 
-import { navigationRef } from "../store/utils";
-import { request } from "../store/utils";
+import * as utils from "../store/utils";
 
 const Drawer = createDrawerNavigator();
 const MainNavigator = (props) => {
@@ -29,14 +26,14 @@ const MainNavigator = (props) => {
   }, []);
 
   const getCategories = async () => {
-    await request("/category", "GET");
+    await utils.request("/category", "GET");
   };
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={utils.navigationRef}>
       <Drawer.Navigator
-        screenOptions={{ gestureEnabled: props.logged }}
-        initialRouteName={props.logged ? "Market" : "LogIn"}
+        screenOptions={{ gestureEnabled: props.token !== null }}
+        initialRouteName={"LogIn"}
         drawerContent={MyDrawer}
       >
         <Drawer.Screen name="Help" component={HelpScreen} />
@@ -57,7 +54,7 @@ const MainNavigator = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    logged: state.logged,
+    token: state.token,
   };
 };
 

@@ -1,6 +1,5 @@
 const initialState = {
-  logged: false,
-  token: "",
+  token: null,
   loading: false,
   categories: [
     { label: "calificacion1", value: "c1" },
@@ -14,8 +13,8 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_LOGGED":
-      return { ...state, logged: action.logged, token: action.token };
+    case "SET_TOKEN":
+      return { ...state, token: action.token };
     case "SET_CATEGORIES":
       return { ...state, categories: action.categories };
     case "SET_COURSES":

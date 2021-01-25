@@ -1,10 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import { COLORS } from "../../store/constants";
-import { navigate } from "../../store/utils";
+import * as utils from "../../store/utils";
 
 const styles = StyleSheet.create({
   link: {
@@ -24,16 +22,10 @@ const styles = StyleSheet.create({
 });
 
 const MyLink = (props) => {
-  let pressed = props.onPress;
-  if (props.logout) {
-    pressed = () => {
-      props.onPress();
-      props.setLogged(false, "");
-    };
-  }
-  if (props.to) {
-    pressed = () => navigate(props.to);
-  }
+  const pressed = async () => {
+    props.logout && (await utils.saveToken(null));
+    utils.navigate(props.to);
+  };
   return (
     <TouchableOpacity style={styles.container} onPress={pressed}>
       <Text style={styles.link}>{props.children}</Text>
@@ -41,15 +33,4 @@ const MyLink = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setLogged: (logged, token) =>
-      dispatch({ type: "SET_LOGGED", logged: logged, token: token }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyLink);
+export default MyLink;
