@@ -18,23 +18,13 @@ const MyDrawer = (props) => {
         <MyLink to="LogIn" logout>
           Cerrar sesión
         </MyLink>
-        <MyLinkGroup title="Mi perfil">
-          <MyLink to="Profile">Configuración</MyLink>
-          <MyLink to="Dashboard">Estadísticas</MyLink>
-          <MyLink to="Stock">Mi tienda</MyLink>
-          <MyLink to="StockDetail">Mi tienda detalles (TEMPORAL)</MyLink>
-          <MyLink>Mis compras</MyLink>
-          <MyLink>Mis evaluaciones</MyLink>
-        </MyLinkGroup>
-        <MyLinkGroup title="Publicar">
-          <MyLink to="OffertProduct">Vender producto</MyLink>
-          <MyLink to="OffertService">Vender servicio</MyLink>
-          <MyLink>Publicar tutoría</MyLink>
-          <MyLink>Vender práctica</MyLink>
-        </MyLinkGroup>
+        <MyLink to="Profile">Configuración</MyLink>
         <MyLink to="Market">Mercado</MyLink>
-        <MyLink to="Tutorials">Tutorías</MyLink>
-        <MyLink>Ofertas de empleo</MyLink>
+        <MyLink to="Offert">Publicar</MyLink>
+        <MyLink to="Stock">Mi tienda</MyLink>
+        <MyLink>Mis compras</MyLink>
+        <MyLink to="Dashboard">Estadísticas</MyLink>
+        <MyLink>Mis evaluaciones</MyLink>
       </View>
     </ScrollView>
   );

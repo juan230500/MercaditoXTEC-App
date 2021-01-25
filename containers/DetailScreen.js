@@ -1,13 +1,13 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { connect } from "react-redux";
 
-import { BASE_URL } from "../store/constants";
 import MyLayout from "../components/MyLayout";
 import MyButton from "../components/UI/MyButton";
 import GenericItem from "../components/GenericItem";
 import { useState } from "react";
 import { useEffect } from "react";
+import * as utils from "../store/utils";
+import DocumentPicker from "react-native-document-picker";
 
 const styles = StyleSheet.create({
   container: {
@@ -28,31 +28,17 @@ const DETAIL = {
   eval: "sdsad",
 };
 
-const ProductDetailScreen = (props) => {
+const DetailScreen = (props) => {
   const [detail, setDetail] = useState(DETAIL);
   useEffect(() => {
     getDetail();
   }, []);
 
   const getDetail = async () => {
-    try {
-      let response = await fetch(
-        BASE_URL + "/product/" + props.route.params.productId,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: props.token,
-          },
-        }
-      );
-      let json = await response.json();
-      console.log("[NETWORK]", json);
-    } catch (error) {
-      console.error(error);
-    }
+    await utils.request("/product/" + props.route.params.productId, "GET");
   };
+
+  const updaloadCV = () => {};
 
   const items = Object.keys(detail).map((el) => (
     <GenericItem key={el} label={el} value={DETAIL[el]}></GenericItem>
@@ -60,38 +46,31 @@ const ProductDetailScreen = (props) => {
 
   let buttons = null;
   console.log(props);
-  if (props.route.params.type == "practice") {
-    buttons = <MyButton title="Ya realicé el pago de la práctica"></MyButton>;
-  } else if (props.route.params.type == "tutorial") {
-    buttons = <MyButton title="Chat con el vendedor"></MyButton>;
-  } else {
-    buttons = [
-      <MyButton key="1" title="Chat con el vendedor"></MyButton>,
-      <MyButton key="2" title="Solicitar producto"></MyButton>,
-    ];
+  switch (props.route.params.type) {
+    case "practice":
+      buttons = <MyButton title="Ya realicé el pago de la práctica"></MyButton>;
+      break;
+    case "tutorial":
+      buttons = <MyButton title="Chat con el tutor"></MyButton>;
+      break;
+    case "job":
+      buttons = <MyButton title="Subir curriculum"></MyButton>;
+      break;
+    default:
+      buttons = <MyButton title="Chat con el vendedor"></MyButton>;
+      break;
   }
 
   return (
     <MyLayout title="Detalle" back>
-      <View style={styles.container}>
-        <ScrollView>
+      <ScrollView>
+        <View style={styles.container}>
           {items}
           {buttons}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </MyLayout>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { token: state.token };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductDetailScreen);
+export default DetailScreen;

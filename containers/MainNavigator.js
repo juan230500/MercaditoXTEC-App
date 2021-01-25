@@ -12,9 +12,8 @@ import SignUpScreen from "./SignUpScreen";
 import StockScreen from "./StockScreen";
 import StockDetailScreen from "./StockDetailScreen";
 import MarketScreen from "./MarketScreen";
-import OffertServiceScreen from "./OffertServiceScreen";
-import OffertProductScreen from "./OffertProductScreen";
-import ProductDetailScreen from "./ProductDetailScreen";
+import OffertScreen from "./OffertScreen";
+import DetailScreen from "./DetailScreen";
 import HelpScreen from "./HelpScreen";
 
 import * as utils from "../store/utils";
@@ -44,9 +43,8 @@ const MainNavigator = (props) => {
         <Drawer.Screen name="Stock" component={StockScreen} />
         <Drawer.Screen name="StockDetail" component={StockDetailScreen} />
         <Drawer.Screen name="Market" component={MarketScreen} />
-        <Drawer.Screen name="OffertService" component={OffertServiceScreen} />
-        <Drawer.Screen name="OffertProduct" component={OffertProductScreen} />
-        <Drawer.Screen name="ProductDetail" component={ProductDetailScreen} />
+        <Drawer.Screen name="Offert" component={OffertScreen} />
+        <Drawer.Screen name="Detail" component={DetailScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

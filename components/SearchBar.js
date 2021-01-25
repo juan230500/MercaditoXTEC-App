@@ -12,11 +12,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { COLORS } from "../store/constants";
 
-const ITEMS = [
-  { display: "lol1", value: "l1" },
-  { display: "lol2", value: "l2" },
-  { display: "lol3", value: "l3" },
-];
+const ITEMS = ["lol1", "lol2", "lol4"];
 
 const styles = StyleSheet.create({
   container: {
@@ -60,9 +56,10 @@ const SearchBar = (props) => {
   const items = ITEMS.map((el) => (
     <TouchableOpacity
       style={{ padding: 8 }}
-      onPress={() => console.log(el.value)}
+      onPress={() => props.onChange(el)}
+      key={el}
     >
-      <Text key={el.value}>{el.display}</Text>
+      <Text>{el}</Text>
     </TouchableOpacity>
   ));
 
@@ -85,7 +82,7 @@ const SearchBar = (props) => {
           selectTextOnFocus
         ></TextInput>
         <Icon
-          onPress={() => setFocused(false)}
+          onPress={() => props.onChange("")}
           style={styles.icon}
           name="times"
           size={20}

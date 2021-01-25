@@ -26,7 +26,7 @@ const LogInScreen = (props) => {
     const fetch = async () => {
       const token = await utils.fetchToken();
       console.log("[LOGIN]", token);
-      token && props.navigation.navigate("Profile");
+      token && props.navigation.navigate("Market");
     };
     fetch();
   }, []);
@@ -34,7 +34,7 @@ const LogInScreen = (props) => {
   const postUser = async (user) => {
     await utils.request("/login", "POST", user);
     await utils.saveToken("abc");
-    props.navigation.navigate("Profile");
+    props.navigation.navigate("Market");
   };
 
   return (

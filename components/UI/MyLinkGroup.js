@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: "Cabin",
+    textAlign: "center",
   },
 });
 

@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    position: "relative",
   },
 });
 
@@ -94,6 +93,8 @@ const MarketScreen = (props) => {
 
   const [loadedItems, setLoadedItems] = useState(ITEMS);
 
+  const [searchFilter, setSearchFilter] = useState("");
+
   useEffect(() => {
     getItems();
   }, []);
@@ -108,6 +109,9 @@ const MarketScreen = (props) => {
       .map((el) => el.value);
     let newItems = [...items];
     newItems = newItems.filter((el) => validOptions.includes(el.type));
+    newItems = newItems.filter((el) =>
+      el.name.toLowerCase().includes(searchFilter.toLowerCase())
+    );
 
     return newItems;
   };
@@ -121,7 +125,7 @@ const MarketScreen = (props) => {
         {
           icon: "info",
           onPress: () =>
-            props.navigation.navigate("ProductDetail", {
+            props.navigation.navigate("Detail", {
               productId: el.id,
               type: el.type,
             }),
@@ -134,7 +138,7 @@ const MarketScreen = (props) => {
   return (
     <MyLayout title="Mercado" drawer>
       <View style={styles.container}>
-        <SearchBar></SearchBar>
+        <SearchBar value={searchFilter} onChange={setSearchFilter}></SearchBar>
         <CheckList options={options} setOptions={setOptions}></CheckList>
 
         <ScrollView>{items}</ScrollView>
