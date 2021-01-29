@@ -9,11 +9,19 @@ export const navigate = (name, params) => {
   navigationRef.current?.navigate(name, params);
 };
 
+export const getCategories = () => {
+  const categories = store.getState().categories;
+  return categories;
+};
+
 export const request = async (route, method, data = null) => {
   const token = store.getState().token;
   store.dispatch({ type: "SET_LOADING", loading: true });
+  let json = null;
+  let response = null;
+  console.log("[NETWORK]", route, method, data);
   try {
-    let response = await fetch(BASE_URL + route, {
+    response = await fetch(BASE_URL + route, {
       method: method,
       headers: {
         Accept: "application/json",
@@ -22,13 +30,12 @@ export const request = async (route, method, data = null) => {
       },
       ...(method !== "GET" && { body: JSON.stringify(data) }),
     });
-    let json = await response.json();
-    console.log("[NETWORK]", json);
-    return json;
+    json = await response.json();
   } catch (error) {
     console.error(error);
   }
   store.dispatch({ type: "SET_LOADING", loading: false });
+  return json;
 };
 
 export const saveToken = async (token) => {
@@ -53,4 +60,22 @@ export const fetchToken = async () => {
   }
   store.dispatch({ type: "SET_LOADING", loading: false });
   return value;
+};
+
+export const filtered = (items, options, searchFilter) => {
+  const validOptions = options
+    .filter((el) => el.selected)
+    .map((el) => el.value);
+  let newItems = [...items];
+  newItems = newItems.filter((el) => validOptions.includes(el.type));
+  newItems = newItems.filter((el) => {
+    if (el.name) {
+      return el.name.toLowerCase().includes(searchFilter.toLowerCase());
+    }
+    if (el.curse) {
+      return el.curse.toLowerCase().includes(searchFilter.toLowerCase());
+    }
+  });
+
+  return newItems;
 };

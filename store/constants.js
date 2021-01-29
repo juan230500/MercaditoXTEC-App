@@ -21,10 +21,7 @@ export const PRODUCT_TYPES = {
     category: {
       display: "Categoría",
       value: "",
-      options: [
-        { label: "calificacion1", value: "c1" },
-        { label: "calificacion2", value: "c2" },
-      ],
+      options: [],
     },
     deliveryInfo: {
       display: "Información para entregar",
@@ -63,6 +60,7 @@ export const PRODUCT_TYPES = {
     },
   },
   tutorial: {
+    tutor: { display: "Nombre del tutor", value: "", required: true },
     curse: { display: "Curso", value: "", required: true },
     topics: { display: "Temas fuertes", value: "", required: true },
     score: {
@@ -75,4 +73,4 @@ export const PRODUCT_TYPES = {
   },
 };
 
-export const BASE_URL = "http://0a21918660e3.ngrok.io";
+export const BASE_URL = "http://61d146aca935.ngrok.io";

@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { connect } from "react-redux";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  RefreshControl,
+} from "react-native";
 
 import MyLayout from "../components/MyLayout";
-import MyTextInput from "../components/UI/MyTextInput";
 import SearchBar from "../components/SearchBar";
-import SmallInput from "../components/UI/SmallInput";
 import CheckList from "../components/CheckList";
 import GenericItem from "../components/GenericItem";
 import { useEffect } from "react";
-import { request } from "../store/utils";
+import * as utils from "../store/utils";
 import MyButton from "../components/UI/MyButton";
 
 const ITEMS = [
@@ -55,6 +58,34 @@ const ITEMS = [
   },
 ];
 
+const OPTIONS = [
+  {
+    display: "Productos",
+    value: "product",
+    selected: true,
+    icon: "shopping-bag",
+  },
+  { display: "Servicios", value: "service", selected: true, icon: "tools" },
+  {
+    display: "Tutorías",
+    value: "tutorial",
+    selected: false,
+    icon: "chalkboard-teacher",
+  },
+  {
+    display: "Prácticas",
+    value: "practice",
+    selected: false,
+    icon: "book-open",
+  },
+  {
+    display: "Ofertas de empleo",
+    value: "job",
+    selected: false,
+    icon: "user-graduate",
+  },
+];
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -63,74 +94,39 @@ const styles = StyleSheet.create({
 });
 
 const MarketScreen = (props) => {
-  const [options, setOptions] = useState([
-    {
-      display: "Productos",
-      value: "product",
-      selected: true,
-      icon: "shopping-bag",
-    },
-    { display: "Servicios", value: "service", selected: true, icon: "tools" },
-    {
-      display: "Tutorías",
-      value: "tutorial",
-      selected: false,
-      icon: "chalkboard-teacher",
-    },
-    {
-      display: "Prácticas",
-      value: "practice",
-      selected: false,
-      icon: "book-open",
-    },
-    {
-      display: "Ofertas de empleo",
-      value: "job",
-      selected: false,
-      icon: "user-graduate",
-    },
-  ]);
-
-  const [loadedItems, setLoadedItems] = useState(ITEMS);
-
+  const [refreshing, setRefreshing] = useState(false);
+  const [options, setOptions] = useState(OPTIONS);
+  const [loadedItems, setLoadedItems] = useState([]);
   const [searchFilter, setSearchFilter] = useState("");
-
   useEffect(() => {
     getItems();
   }, []);
 
   const getItems = async () => {
-    await request("/market", "GET");
+    const json = await utils.request("/market", "GET");
+    console.log("[MARKET]", json);
+    json ? setLoadedItems(json) : setLoadedItems(ITEMS);
   };
 
-  const filtered = (items) => {
-    const validOptions = options
-      .filter((el) => el.selected)
-      .map((el) => el.value);
-    let newItems = [...items];
-    newItems = newItems.filter((el) => validOptions.includes(el.type));
-    newItems = newItems.filter((el) =>
-      el.name.toLowerCase().includes(searchFilter.toLowerCase())
-    );
-
-    return newItems;
-  };
-
-  const items = filtered(loadedItems).map((el) => (
+  const items = utils.filtered(loadedItems, options, searchFilter).map((el) => (
     <GenericItem
-      key={el.id}
-      label={el.name}
-      value={`${el.eval}★ ${el.price}₡`}
+      key={el._id}
+      label={el.name ? el.name : el.curse}
+      value={`${el.eval}★ ${el.price ? el.price + "₡" : ""}`}
       buttons={[
         {
           icon: "info",
           onPress: () =>
             props.navigation.navigate("Detail", {
-              productId: el.id,
+              productId: el._id,
               type: el.type,
             }),
         },
-        { icon: "comments-dollar", onPress: () => console.log("chat") },
+        {
+          icon: "comments-dollar",
+          onPress: () =>
+            props.navigation.navigate("Chat", { productId: el._id }),
+        },
       ]}
     ></GenericItem>
   ));
@@ -140,14 +136,19 @@ const MarketScreen = (props) => {
       <View style={styles.container}>
         <SearchBar value={searchFilter} onChange={setSearchFilter}></SearchBar>
         <CheckList options={options} setOptions={setOptions}></CheckList>
-
-        <ScrollView>{items}</ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={getItems}
+            ></RefreshControl>
+          }
+        >
+          {items}
+        </ScrollView>
       </View>
     </MyLayout>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { categories: state.categories };
-};
-export default connect(mapStateToProps)(MarketScreen);
+export default MarketScreen;

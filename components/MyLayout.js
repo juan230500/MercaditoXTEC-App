@@ -12,22 +12,21 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   header: {
-    padding: 0,
-    height: 75,
+    padding: 16,
     paddingTop: 32,
-    paddingBottom: 16,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
   text: {
+    flex: 1,
     color: COLORS.white,
     fontSize: 32,
     fontWeight: "bold",
     textAlign: "center",
-    width: "70%",
   },
   icon: {
+    backgroundColor: "blue",
     width: "10%",
   },
   card: {
@@ -54,33 +53,29 @@ const MyLayout = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.icon}>
-          {props.drawer ? (
-            <Icon
-              onPress={navigation.openDrawer}
-              name="bars"
-              color="white"
-              size={32}
-            ></Icon>
-          ) : null}
-          {props.back ? (
-            <Icon
-              onPress={navigation.goBack}
-              name="arrow-left"
-              color="white"
-              size={32}
-            ></Icon>
-          ) : null}
-        </View>
-        <Text style={styles.text}>{props.title}</Text>
-        <View style={styles.icon}>
+        {props.drawer ? (
           <Icon
-            onPress={() => navigation.navigate("Help")}
-            name="question-circle"
+            onPress={navigation.openDrawer}
+            name="bars"
             color="white"
             size={32}
           ></Icon>
-        </View>
+        ) : null}
+        {props.back ? (
+          <Icon
+            onPress={navigation.goBack}
+            name="arrow-left"
+            color="white"
+            size={32}
+          ></Icon>
+        ) : null}
+        <Text style={styles.text}>{props.title}</Text>
+        <Icon
+          onPress={() => navigation.navigate("Help")}
+          name="question-circle"
+          color="white"
+          size={32}
+        ></Icon>
       </View>
       <View style={styles.card}>{props.load ? loading : props.children}</View>
     </View>

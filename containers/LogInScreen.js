@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { connect } from "react-redux";
+import { StyleSheet, View, ScrollView, Alert } from "react-native";
 
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
 import * as utils from "../store/utils";
-import MyButton from "../components/UI/MyButton";
 import { useEffect } from "react";
 
 const styles = StyleSheet.create({
@@ -25,16 +23,21 @@ const LogInScreen = (props) => {
   useEffect(() => {
     const fetch = async () => {
       const token = await utils.fetchToken();
-      console.log("[LOGIN]", token);
+      console.log("[LOGIN FETCH]", token);
       token && props.navigation.navigate("Market");
     };
     fetch();
   }, []);
 
   const postUser = async (user) => {
-    await utils.request("/login", "POST", user);
-    await utils.saveToken("abc");
-    props.navigation.navigate("Market");
+    const json = await utils.request("/users/login", "POST", user);
+    console.log("[LOGIN]", json, json.token);
+    if (json.token) {
+      await utils.saveToken(json.token);
+      props.navigation.navigate("Market");
+    } else {
+      Alert.alert("¡Ups!", "La contresaña o el correo son incorrectos");
+    }
   };
 
   return (
@@ -53,12 +56,4 @@ const LogInScreen = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);
+export default LogInScreen;

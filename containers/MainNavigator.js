@@ -15,6 +15,7 @@ import MarketScreen from "./MarketScreen";
 import OffertScreen from "./OffertScreen";
 import DetailScreen from "./DetailScreen";
 import HelpScreen from "./HelpScreen";
+import ChatScreen from "./ChatScreen";
 
 import * as utils from "../store/utils";
 
@@ -25,14 +26,16 @@ const MainNavigator = (props) => {
   }, []);
 
   const getCategories = async () => {
-    await utils.request("/category", "GET");
+    let json = await utils.request("/categories", "GET");
+    console.log("[CATEGORIES]", json);
+    json && props.setCategories(json);
   };
 
   return (
     <NavigationContainer ref={utils.navigationRef}>
       <Drawer.Navigator
-        screenOptions={{ gestureEnabled: props.token !== null }}
-        initialRouteName={"LogIn"}
+        screenOptions={{ gestureEnabled: true }} //props.token !== null
+        initialRouteName={"Market"}
         drawerContent={MyDrawer}
       >
         <Drawer.Screen name="Help" component={HelpScreen} />
@@ -45,6 +48,7 @@ const MainNavigator = (props) => {
         <Drawer.Screen name="Market" component={MarketScreen} />
         <Drawer.Screen name="Offert" component={OffertScreen} />
         <Drawer.Screen name="Detail" component={DetailScreen} />
+        <Drawer.Screen name="Chat" component={ChatScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

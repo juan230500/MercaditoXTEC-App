@@ -16,6 +16,19 @@ const styles = StyleSheet.create({
 });
 
 const CheckList = (props) => {
+  const select = (index) => {
+    let newOptions = [...props.options];
+    if (props.unique) {
+      for (let option of newOptions) {
+        option.selected = false;
+      }
+    }
+    let newItem = { ...newOptions[index] };
+    newItem.selected = !newItem.selected;
+    newOptions[index] = newItem;
+    props.setOptions(newOptions);
+  };
+
   const items = props.options.map((el, index) => (
     <CheckItem
       key={index}
@@ -25,14 +38,6 @@ const CheckList = (props) => {
       icon={el.icon}
     ></CheckItem>
   ));
-
-  const select = (index) => {
-    let newOptions = [...props.options];
-    let newItem = { ...newOptions[index] };
-    newItem.selected = !newItem.selected;
-    newOptions[index] = newItem;
-    props.setOptions(newOptions);
-  };
 
   return <View style={styles.container}>{items}</View>;
 };

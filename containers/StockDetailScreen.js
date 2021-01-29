@@ -1,23 +1,59 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import MyLayout from "../components/MyLayout";
+import MyButton from "../components/UI/MyButton";
+import GenericItem from "../components/GenericItem";
+import { useState } from "react";
+import { useEffect } from "react";
+import * as utils from "../store/utils";
+import * as DocumentPicker from "expo-document-picker";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 8,
   },
 });
+const DETAIL = {
+  name: "qwe",
+  client: "Negociando con Juan",
+  status: "Pendiente de entregar",
+};
 
-const StockDetailScreen = ({ navigation }) => {
+const StockDetailScreen = (props) => {
+  const [detail, setDetail] = useState(DETAIL);
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  const getDetail = async () => {
+    await utils.request("/status/" + props.route.params.productId, "GET");
+  };
+
+  const items = Object.keys(detail).map((el) => (
+    <GenericItem key={el} label={el} value={DETAIL[el]}></GenericItem>
+  ));
+
+  let buttons = null;
+  switch (detail.status) {
+    case "Pendiente de entregar":
+      buttons = <MyButton title="Confirmar entrega"></MyButton>;
+      break;
+    default:
+      break;
+  }
+
   return (
-    <MyLayout title="Detalles">
-      <View style={styles.container}>
-        <Text>StockDetailScreen</Text>
-      </View>
+    <MyLayout title="Estado" back>
+      <ScrollView>
+        <View style={styles.container}>
+          {items}
+          {buttons}
+          <MyButton title="Chat"></MyButton>
+        </View>
+      </ScrollView>
     </MyLayout>
   );
 };

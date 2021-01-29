@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Alert, ScrollView } from "react-native";
-import { connect } from "react-redux";
 
 import MyLink from "../components/UI/MyLink";
 import MyLayout from "../components/MyLayout";
 import GenericForm from "../components/GenericForm";
-import { request } from "../store/utils";
+import * as utils from "../store/utils";
 
 const styles = StyleSheet.create({
   container: {
@@ -24,9 +23,14 @@ const SignUpScreen = (props) => {
   });
 
   const postUser = async (user) => {
-    await request("/signup", "POST", user);
-    await utils.saveToken("abc");
-    props.navigation.navigate("Profile");
+    const json = await utils.request("/users/signup", "POST", user);
+    console.log("[SIGNUP]", json);
+    if (json.token) {
+      await utils.saveToken(json.token);
+      props.navigation.navigate("Market");
+    } else {
+      Alert.alert("¡Ups!", "Ese correo ya se encuetra registrado");
+    }
   };
 
   return (
@@ -45,12 +49,4 @@ const SignUpScreen = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
+export default SignUpScreen;

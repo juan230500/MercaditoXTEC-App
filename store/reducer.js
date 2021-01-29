@@ -1,10 +1,7 @@
 const initialState = {
   token: null,
   loading: false,
-  categories: [
-    { label: "calificacion1", value: "c1" },
-    { label: "calificacion2", value: "c2" },
-  ],
+  categories: [],
   courses: [
     { label: "curso1", value: "c1" },
     { label: "curso2", value: "c2" },

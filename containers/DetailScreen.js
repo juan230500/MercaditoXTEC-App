@@ -7,7 +7,7 @@ import GenericItem from "../components/GenericItem";
 import { useState } from "react";
 import { useEffect } from "react";
 import * as utils from "../store/utils";
-import DocumentPicker from "react-native-document-picker";
+import * as DocumentPicker from "expo-document-picker";
 
 const styles = StyleSheet.create({
   container: {
@@ -38,14 +38,16 @@ const DetailScreen = (props) => {
     await utils.request("/product/" + props.route.params.productId, "GET");
   };
 
-  const updaloadCV = () => {};
+  const updaloadCV = async () => {
+    const response = await DocumentPicker.getDocumentAsync();
+    console.log("[FILE UPLOAD]", response);
+  };
 
   const items = Object.keys(detail).map((el) => (
     <GenericItem key={el} label={el} value={DETAIL[el]}></GenericItem>
   ));
 
   let buttons = null;
-  console.log(props);
   switch (props.route.params.type) {
     case "practice":
       buttons = <MyButton title="Ya realicé el pago de la práctica"></MyButton>;
@@ -54,10 +56,15 @@ const DetailScreen = (props) => {
       buttons = <MyButton title="Chat con el tutor"></MyButton>;
       break;
     case "job":
-      buttons = <MyButton title="Subir curriculum"></MyButton>;
+      buttons = (
+        <MyButton title="Subir curriculum" onPress={updaloadCV}></MyButton>
+      );
+      break;
+    case "product":
+    case "service":
+      buttons = <MyButton title="Chat con el vendedor"></MyButton>;
       break;
     default:
-      buttons = <MyButton title="Chat con el vendedor"></MyButton>;
       break;
   }
 

@@ -7,25 +7,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.accent,
     padding: 4,
-    margin: 2,
-    width: 25,
-    height: 25,
+    width: 40,
+    justifyContent: "center",
   },
 });
 
 const SmallButton = (props) => {
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <View style={styles.container}>
-        <Icon
-          style={{
-            textAlign: "center",
-          }}
-          name={props.icon}
-          color="black"
-          size={16}
-        ></Icon>
-      </View>
+    <TouchableOpacity style={styles.container} onPress={props.onPress}>
+      <Icon
+        style={{
+          textAlign: "center",
+        }}
+        name={props.icon}
+        color="black"
+        size={16}
+      ></Icon>
     </TouchableOpacity>
   );
 };

@@ -1,32 +1,57 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 
+import { COLORS } from "../store/constants";
 import MyLink from "./UI/MyLink";
-import MyLinkGroup from "./UI/MyLinkGroup";
+import DrawerItem from "./DrawerItem";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: "white",
+    backgroundColor: COLORS.primary,
+    flex: 1,
   },
 });
 
 const MyDrawer = (props) => {
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <MyLink to="LogIn" logout>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.primary,
+        height: "100%",
+      }}
+    >
+      <Image
+        source={require("../assets/icon.png")}
+        style={{ height: "30%", aspectRatio: 1, alignSelf: "center" }}
+      />
+      <ScrollView
+        contentContainerStyle={{
+          backgroundColor: COLORS.primary,
+        }}
+      >
+        <DrawerItem to="LogIn" logout icon="sign-out-alt">
           Cerrar sesión
-        </MyLink>
-        <MyLink to="Profile">Configuración</MyLink>
-        <MyLink to="Market">Mercado</MyLink>
-        <MyLink to="Offert">Publicar</MyLink>
-        <MyLink to="Stock">Mi tienda</MyLink>
-        <MyLink>Mis compras</MyLink>
-        <MyLink to="Dashboard">Estadísticas</MyLink>
-        <MyLink>Mis evaluaciones</MyLink>
-      </View>
-    </ScrollView>
+        </DrawerItem>
+        <DrawerItem to="Profile" icon="sliders-h">
+          Configuración
+        </DrawerItem>
+        <DrawerItem to="Market" icon="store">
+          Mercado
+        </DrawerItem>
+        <DrawerItem to="Offert" icon="lightbulb">
+          Publicar
+        </DrawerItem>
+        <DrawerItem to="Stock" icon="boxes">
+          Mi tienda
+        </DrawerItem>
+        <DrawerItem icon="shopping-bag">Mis compras</DrawerItem>
+        <DrawerItem to="Dashboard" icon="chart-bar">
+          Estadísticas
+        </DrawerItem>
+        <DrawerItem icon="star">Mis evaluaciones</DrawerItem>
+      </ScrollView>
+    </View>
   );
 };
 

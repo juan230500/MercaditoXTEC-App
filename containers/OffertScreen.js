@@ -8,6 +8,8 @@ import { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import * as utils from "../store/utils";
 import MyTextInput from "../components/UI/MyTextInput";
+import MyButton from "../components/UI/MyButton";
+import * as DocumentPicker from "expo-document-picker";
 
 const styles = StyleSheet.create({
   container: {
@@ -27,17 +29,29 @@ const TYPE_OPTIONS = [
 const OffertScreen = (props) => {
   const [type, setType] = useState("");
   const [formData, setFormData] = useState({});
+  const [file, setFile] = useState({});
 
   const postProduct = async (product) => {
-    console.log("[PRODUCT]", product);
-    await utils.request("/" + type, "POST", product);
+    const newProduct = { ...product, type: type };
+    console.log("[OFFERT]", newProduct);
+    await utils.request("/" + type, "POST", newProduct);
     props.navigation.navigate("Market");
     Alert.alert("Alerta", "Publicación existosa");
   };
 
   const selectType = (type) => {
-    setFormData(PRODUCT_TYPES[type]);
+    const newProductTypes = { ...PRODUCT_TYPES };
+    if (type === "product") {
+      newProductTypes.product.category.options = utils.getCategories();
+      newProductTypes.product.category.value = utils.getCategories()[0];
+    }
+    setFormData(newProductTypes[type]);
     setType(type);
+  };
+
+  const loadDocument = async () => {
+    const response = await DocumentPicker.getDocumentAsync();
+    console.log("[FILE UPLOAD]", response);
   };
 
   return (
@@ -50,6 +64,12 @@ const OffertScreen = (props) => {
             options={TYPE_OPTIONS}
             label="Tipo de publicación"
           ></MyTextInput>
+          {type === "practice" && (
+            <MyButton
+              title="Subir archivo de práctica"
+              onPress={loadDocument}
+            ></MyButton>
+          )}
           {type !== "" ? (
             <GenericForm
               onComplete={(r) =>

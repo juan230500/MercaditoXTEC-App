@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     padding: 8,
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
   },
   text: {
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     fontFamily: "Cabin",
   },
   buttonContainer: {
-    padding: 8,
     flexDirection: "row",
   },
 });
