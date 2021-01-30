@@ -5,7 +5,10 @@ import {
   Text,
   View,
   RefreshControl,
+  Alert,
 } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import { connect } from "react-redux";
 
 import MyLayout from "../components/MyLayout";
 import SearchBar from "../components/SearchBar";
@@ -100,6 +103,7 @@ const MarketScreen = (props) => {
   const [searchFilter, setSearchFilter] = useState("");
   useEffect(() => {
     getItems();
+    getCategories();
   }, []);
 
   const getItems = async () => {
@@ -108,9 +112,29 @@ const MarketScreen = (props) => {
     json ? setLoadedItems(json) : setLoadedItems(ITEMS);
   };
 
+  const getCategories = async () => {
+    let json = await utils.request("/categories", "GET");
+    console.log("[CATEGORIES]", json);
+    json && props.setCategories(json.categories);
+  };
+
+  const postChat = async (type, productId) => {
+    let jsonPrev = await utils.request(`/${type}/${productId}`, "GET");
+    console.log("[DETAIL]", jsonPrev);
+
+    let json = await utils.request("/order", "POST", {
+      itemId: productId,
+      type: type,
+      date: new Date(),
+      status: "Pendiente de pago",
+      seller: jsonPrev.userEmail,
+    });
+    console.log("[CHAT POST]", json);
+  };
+
   const items = utils.filtered(loadedItems, options, searchFilter).map((el) => (
     <GenericItem
-      key={el._id}
+      key={[el.type, el.id].join("-")}
       label={el.name ? el.name : el.curse}
       value={`${el.eval}★ ${el.price ? el.price + "₡" : ""}`}
       buttons={[
@@ -118,14 +142,30 @@ const MarketScreen = (props) => {
           icon: "info",
           onPress: () =>
             props.navigation.navigate("Detail", {
-              productId: el._id,
+              productId: el.id,
               type: el.type,
             }),
         },
         {
-          icon: "comments-dollar",
+          icon: "shopping-bag",
           onPress: () =>
-            props.navigation.navigate("Chat", { productId: el._id }),
+            Alert.alert(
+              "",
+              "Puede revisar más detalles con el botón de información ¿Está interesado en el producto?",
+              [
+                {
+                  text: "Sí",
+                  onPress: () => {
+                    postChat(el.type, el.id);
+                    Alert.alert(
+                      "",
+                      "El producto se agregó a tus compras para que puedas chatear y darle seguimiento"
+                    );
+                    props.navigation.navigate("Purchases");
+                  },
+                },
+              ]
+            ),
         },
       ]}
     ></GenericItem>
@@ -151,4 +191,17 @@ const MarketScreen = (props) => {
   );
 };
 
-export default MarketScreen;
+const mapStateToProps = (state) => {
+  return {
+    token: state.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setCategories: (categories) =>
+      dispatch({ type: "SET_CATEGORIES", categories: categories }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MarketScreen);

@@ -29,14 +29,27 @@ const TYPE_OPTIONS = [
 const OffertScreen = (props) => {
   const [type, setType] = useState("");
   const [formData, setFormData] = useState({});
-  const [file, setFile] = useState({});
+  const [file, setFile] = useState();
+  const [file2, setFile2] = useState();
 
   const postProduct = async (product) => {
-    const newProduct = { ...product, type: type };
-    console.log("[OFFERT]", newProduct);
-    await utils.request("/" + type, "POST", newProduct);
+    console.log("[OFFERT]", product);
+    await utils.request("/" + type, "POST", product);
     props.navigation.navigate("Market");
     Alert.alert("Alerta", "Publicación existosa");
+  };
+
+  const postPractice = async (practice) => {
+    let json = await utils.upload(
+      "/practice",
+      file,
+      "application/pdf",
+      practice
+    );
+    console.log("[FILE UPLOAD 1]", json);
+    const id = json.id || "";
+    json = await utils.upload("/practice/" + id, file2, "application/pdf");
+    console.log("[FILE UPLOAD 2]", json);
   };
 
   const selectType = (type) => {
@@ -50,8 +63,19 @@ const OffertScreen = (props) => {
   };
 
   const loadDocument = async () => {
-    const response = await DocumentPicker.getDocumentAsync();
-    console.log("[FILE UPLOAD]", response);
+    const response = await DocumentPicker.getDocumentAsync({
+      type: "application/pdf",
+    });
+    console.log("[FILE UPLOAD 1]", response);
+    setFile(response);
+  };
+
+  const loadDocument2 = async () => {
+    const response = await DocumentPicker.getDocumentAsync({
+      type: "application/pdf",
+    });
+    console.log("[FILE UPLOAD 2]", response);
+    setFile2(response);
   };
 
   return (
@@ -64,18 +88,28 @@ const OffertScreen = (props) => {
             options={TYPE_OPTIONS}
             label="Tipo de publicación"
           ></MyTextInput>
-          {type === "practice" && (
+          {type === "practice" && [
             <MyButton
-              title="Subir archivo de práctica"
+              key="1"
+              title="Subir archivo de práctica (PDF)"
               onPress={loadDocument}
-            ></MyButton>
-          )}
+            ></MyButton>,
+            <MyButton
+              key="2"
+              title="Subir archivo de solución (PDF)"
+              onPress={loadDocument2}
+            ></MyButton>,
+          ]}
           {type !== "" ? (
             <GenericForm
               onComplete={(r) =>
                 Alert.alert("Alerta", "¿Está seguro de publicar esto?", [
                   { text: "Cancelar", style: "cancel" },
-                  { text: "Confirmar", onPress: () => postProduct(r) },
+                  {
+                    text: "Confirmar",
+                    onPress: () =>
+                      type === "practice" ? postPractice(r) : postProduct(r),
+                  },
                 ])
               }
               formData={formData}

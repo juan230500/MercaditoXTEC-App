@@ -35,7 +35,6 @@ export const PRODUCT_TYPES = {
     },
   },
   service: {
-    name: { display: "Nombre", value: "", required: true },
     description: { display: "Descripción", value: "", required: true },
     price: { display: "Precio", value: "", required: true, number: true },
     deliveryInfo: {
@@ -73,4 +72,4 @@ export const PRODUCT_TYPES = {
   },
 };
 
-export const BASE_URL = "http://61d146aca935.ngrok.io";
+export const BASE_URL = "http://7c63a3619ced.ngrok.io";

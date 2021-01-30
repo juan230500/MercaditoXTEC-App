@@ -54,18 +54,20 @@ const GenericForm = (props) => {
     props.setFormData(newFormData);
   };
 
-  const inputs = Object.keys(props.formData).map((el) => (
-    <MyTextInput
-      key={el}
-      label={props.formData[el].display}
-      value={props.formData[el].value}
-      onChange={(text) => inputChangeHandler(text, el)}
-      password={el === "password"}
-      required={missingFields.includes(el)}
-      options={props.formData[el].options}
-      number={props.formData[el].number}
-    ></MyTextInput>
-  ));
+  const inputs = Object.keys(props.formData).map((el) =>
+    props.formData[el].hide ? null : (
+      <MyTextInput
+        key={el}
+        label={props.formData[el].display}
+        value={props.formData[el].value}
+        onChange={(text) => inputChangeHandler(text, el)}
+        password={el === "password"}
+        required={missingFields.includes(el)}
+        options={props.formData[el].options}
+        number={props.formData[el].number}
+      ></MyTextInput>
+    )
+  );
 
   const buttons = props.actions
     ? props.actions.map((el) => (

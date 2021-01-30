@@ -45,7 +45,9 @@ const MyDrawer = (props) => {
         <DrawerItem to="Stock" icon="boxes">
           Mi tienda
         </DrawerItem>
-        <DrawerItem icon="shopping-bag">Mis compras</DrawerItem>
+        <DrawerItem icon="shopping-bag" to="Purchases">
+          Mis compras
+        </DrawerItem>
         <DrawerItem to="Dashboard" icon="chart-bar">
           Estadísticas
         </DrawerItem>

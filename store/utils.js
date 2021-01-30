@@ -28,7 +28,35 @@ export const request = async (route, method, data = null) => {
         "Content-Type": "application/json",
         Authorization: token,
       },
+
       ...(method !== "GET" && { body: JSON.stringify(data) }),
+    });
+    json = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+  store.dispatch({ type: "SET_LOADING", loading: false });
+  return json;
+};
+
+export const upload = async (route, file, type, data = {}) => {
+  const token = store.getState().token;
+  store.dispatch({ type: "SET_LOADING", loading: true });
+  let json = null;
+  let response = null;
+  console.log("[UPLOAD]", route, file);
+  var form = new FormData();
+  file.type = type;
+  form.append("file", file);
+  for (let key in data) {
+    form.append(key, data[key]);
+  }
+  console.log("[FORM]", route, form);
+  try {
+    response = await fetch(BASE_URL + route, {
+      method: "POST",
+      headers: { "Content-Type": "multipart/form-data", Authorization: token },
+      body: form,
     });
     json = await response.json();
   } catch (error) {

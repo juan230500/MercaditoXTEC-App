@@ -20,8 +20,13 @@ const ProfileScreen = (props) => {
     name: { display: "Nombre completo", value: "1", required: true },
     phone: { display: "Teléfono", value: "2", required: true },
     address: { display: "Dirección", value: "3", required: true },
-    email: { display: "Correo XTEC", value: "4", required: true },
-    password: { display: "Contraseña XTEC", value: "5", required: true },
+    email: { display: "Correo XTEC", value: "4", required: true, hide: true },
+    password: {
+      display: "Contraseña XTEC",
+      value: "5",
+      required: true,
+      hide: true,
+    },
   });
 
   useEffect(() => {
@@ -29,11 +34,21 @@ const ProfileScreen = (props) => {
   }, []);
 
   const getUser = async () => {
-    await request("/student", "GET");
+    let json = await request("/users/me", "GET");
+    console.log("[PROFILE GET]", json);
+    const newData = { ...data };
+    for (let key in data) {
+      const newItem = { ...newData[key] };
+      newItem.value = json[key];
+      newData[key] = newItem;
+    }
+    setData(newData);
   };
 
   const putUser = async (user) => {
-    await request("/student", "PUT", user);
+    const { email, password, ...newUser } = user;
+    let json = await request("/users", "PUT", newUser);
+    console.log("[PROFILE PUT]", json);
   };
 
   let content = isEditing ? (

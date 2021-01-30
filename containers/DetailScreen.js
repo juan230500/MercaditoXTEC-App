@@ -6,6 +6,7 @@ import MyButton from "../components/UI/MyButton";
 import GenericItem from "../components/GenericItem";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import * as utils from "../store/utils";
 import * as DocumentPicker from "expo-document-picker";
 
@@ -29,13 +30,18 @@ const DETAIL = {
 };
 
 const DetailScreen = (props) => {
-  const [detail, setDetail] = useState(DETAIL);
+  const [detail, setDetail] = useState();
   useEffect(() => {
     getDetail();
-  }, []);
+  }, [props.route.params.productId]);
 
   const getDetail = async () => {
-    await utils.request("/product/" + props.route.params.productId, "GET");
+    let json = await utils.request(
+      `/${props.route.params.type}/${props.route.params.productId}`,
+      "GET"
+    );
+    console.log("[DETAIL]", json);
+    json && setDetail(json);
   };
 
   const updaloadCV = async () => {
@@ -43,9 +49,11 @@ const DetailScreen = (props) => {
     console.log("[FILE UPLOAD]", response);
   };
 
-  const items = Object.keys(detail).map((el) => (
-    <GenericItem key={el} label={el} value={DETAIL[el]}></GenericItem>
-  ));
+  const items =
+    detail &&
+    Object.keys(detail).map((el) => (
+      <GenericItem key={el} label={el} value={detail[el]}></GenericItem>
+    ));
 
   let buttons = null;
   switch (props.route.params.type) {
