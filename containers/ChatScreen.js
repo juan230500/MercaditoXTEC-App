@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import io from "socket.io-client";
 
 import ChatMessage from "../components/ChatMessage";
 import MyLayout from "../components/MyLayout";
@@ -47,22 +48,23 @@ const ChatScreen = (props) => {
   const [newMessage, setNewMessage] = useState("");
   const [user, setUser] = useState("");
   const [chatId, setChatId] = useState(0);
+  let socket = useRef(io(BASE_URL));
 
   useEffect(() => {
     getMessages();
   }, [props.route.params.productId]);
 
   useEffect(() => {
-    utils.socket.on("chat" + chatId, (msg) => {
+    socket.current.on("chat" + chatId, (msg) => {
       console.log("[MENSAJE]", msg);
       const newMessages = [...messages];
       newMessages.push(msg);
       setMessages(newMessages);
     });
     return () => {
-      utils.socket.off("chat" + chatId);
+      socket.current.off("chat" + chatId);
     };
-  }, [messages]);
+  }, [messages, chatId]);
 
   const getMessages = async () => {
     let json = await utils.request(
@@ -76,7 +78,7 @@ const ChatScreen = (props) => {
   };
 
   const postMessage = () => {
-    utils.socket.emit("message", {
+    socket.current.emit("message", {
       value: newMessage,
       id: chatId,
       createdBy: user,
@@ -85,7 +87,7 @@ const ChatScreen = (props) => {
   };
 
   const items = messages.map((el) => (
-    <ChatMessage key={el.value + el.id}>
+    <ChatMessage key={Math.random()}>
       {el.createdBy}: {el.value}
     </ChatMessage>
   ));
