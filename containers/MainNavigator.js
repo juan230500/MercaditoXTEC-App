@@ -17,6 +17,7 @@ import DetailScreen from "./DetailScreen";
 import HelpScreen from "./HelpScreen";
 import ChatScreen from "./ChatScreen";
 import PurchasesScreen from "./PurchasesScreen";
+import EvalScreen from "./EvalScreen";
 
 import * as utils from "../store/utils";
 
@@ -41,6 +42,7 @@ const MainNavigator = (props) => {
         <Drawer.Screen name="Detail" component={DetailScreen} />
         <Drawer.Screen name="Chat" component={ChatScreen} />
         <Drawer.Screen name="Purchases" component={PurchasesScreen} />
+        <Drawer.Screen name="Eval" component={EvalScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

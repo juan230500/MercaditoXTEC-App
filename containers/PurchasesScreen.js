@@ -48,7 +48,8 @@ const PurchasesScreen = (props) => {
       buttons={[
         {
           icon: "check-square",
-          onPress: () => utils.navigate("StockDetail", { productId: el.id }),
+          onPress: () =>
+            utils.navigate("StockDetail", { productId: el.id, client: true }),
         },
         {
           icon: "comments-dollar",
@@ -64,6 +65,7 @@ const PurchasesScreen = (props) => {
   return (
     <MyLayout title="Mis compras" drawer>
       <View style={styles.container}>
+        <MyButton title="Actualizar" onPress={() => getItems()}></MyButton>
         <SearchBar value={searchFilter} onChange={setSearchFilter}></SearchBar>
         <ScrollView>{items}</ScrollView>
         <MyButton title={`Puntos acomulados: ${points}`}></MyButton>

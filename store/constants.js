@@ -72,4 +72,4 @@ export const PRODUCT_TYPES = {
   },
 };
 
-export const BASE_URL = "http://7c63a3619ced.ngrok.io";
+export const BASE_URL = "http://3b2ba2156a32.ngrok.io";

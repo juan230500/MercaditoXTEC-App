@@ -126,7 +126,7 @@ const MarketScreen = (props) => {
       itemId: productId,
       type: type,
       date: new Date(),
-      status: "Pendiente de pago",
+      status: "Pendiente pago",
       seller: jsonPrev.userEmail,
     });
     console.log("[CHAT POST]", json);

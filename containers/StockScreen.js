@@ -9,41 +9,6 @@ import { useEffect } from "react";
 import * as utils from "../store/utils";
 import MyButton from "../components/UI/MyButton";
 
-const ITEMS = [
-  {
-    id: "123",
-    name: "producto1",
-    type: "publication",
-  },
-  {
-    id: "124",
-    name: "producto2",
-    type: "publication",
-  },
-  {
-    id: "126",
-    name: "producto3",
-    type: "pending",
-  },
-  {
-    id: "127",
-    name: "producto4",
-    type: "pending",
-  },
-  {
-    id: "128",
-    name: "producto7",
-    type: "complete",
-    value: "entregado el 17/11/20",
-  },
-  {
-    id: "129",
-    name: "producto8",
-    type: "complete",
-    value: "entregado el 17/10/20",
-  },
-];
-
 const OPTIONS = [
   {
     display: "Completados",
@@ -73,64 +38,40 @@ const styles = StyleSheet.create({
 });
 
 const StockScreen = (props) => {
-  const [options, setOptions] = useState(OPTIONS);
   const [points, setPoints] = useState(0);
-  const [loadedItems, setLoadedItems] = useState(ITEMS);
+  const [loadedItems, setLoadedItems] = useState([]);
   const [searchFilter, setSearchFilter] = useState("");
   useEffect(() => {
     getItems();
   }, []);
 
   const getItems = async () => {
-    await utils.request("/stock", "GET");
+    let json = await utils.request("/stock", "GET");
+    console.log("[STOCK]", json);
+    json && setLoadedItems(json);
   };
 
-  const chooseButtons = (type, id) => {
-    let buttons = null;
-    switch (type) {
-      case "complete":
-        buttons = [];
-        break;
-      case "publication":
-        buttons = [
-          {
-            icon: "info",
-            onPress: () =>
-              utils.navigate("Detail", { productId: id, type: null }),
-          },
-          { icon: "edit", onPress: () => console.log("edit") },
-          { icon: "trash", onPress: () => console.log("delete") },
-        ];
-        break;
-      case "pending":
-        buttons = [
-          {
-            icon: "check-square",
-            onPress: () => utils.navigate("StockDetail", { productId: id }),
-          },
-          { icon: "comments-dollar", onPress: () => console.log("chat") },
-        ];
-        break;
-    }
-    return buttons;
-  };
-
-  const items = utils
-    .filtered(loadedItems, options, searchFilter)
-    .map((el) => (
-      <GenericItem
-        key={el.id}
-        label={el.name}
-        value={el.type === "complete" ? el.value : ""}
-        buttons={chooseButtons(el.type, el.id)}
-      ></GenericItem>
-    ));
+  const items = loadedItems.map((el) => (
+    <GenericItem
+      key={el.id}
+      label={el.seller}
+      value={el.status}
+      buttons={[
+        {
+          icon: "check-square",
+          onPress: () =>
+            utils.navigate("StockDetail", { productId: el.id, client: false }),
+        },
+        { icon: "comments-dollar", onPress: () => console.log("chat") },
+      ]}
+    ></GenericItem>
+  ));
 
   return (
     <MyLayout title="Mi tienda" drawer>
       <View style={styles.container}>
+        <MyButton title="Actualizar" onPress={() => getItems()}></MyButton>
         <SearchBar value={searchFilter} onChange={setSearchFilter}></SearchBar>
-        <CheckList options={options} setOptions={setOptions} unique></CheckList>
         <ScrollView>{items}</ScrollView>
         <MyButton title={`Puntos acomulados: ${points}`}></MyButton>
       </View>
