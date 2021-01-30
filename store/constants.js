@@ -35,6 +35,7 @@ export const PRODUCT_TYPES = {
     },
   },
   service: {
+    name: { display: "Nombre", value: "", required: true },
     description: { display: "Descripción", value: "", required: true },
     price: { display: "Precio", value: "", required: true, number: true },
     deliveryInfo: {
@@ -59,7 +60,6 @@ export const PRODUCT_TYPES = {
     },
   },
   tutorial: {
-    tutor: { display: "Nombre del tutor", value: "", required: true },
     curse: { display: "Curso", value: "", required: true },
     topics: { display: "Temas fuertes", value: "", required: true },
     score: {

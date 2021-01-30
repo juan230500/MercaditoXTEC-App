@@ -56,7 +56,7 @@ const OffertScreen = (props) => {
     const newProductTypes = { ...PRODUCT_TYPES };
     if (type === "product") {
       newProductTypes.product.category.options = utils.getCategories();
-      newProductTypes.product.category.value = utils.getCategories()[0];
+      newProductTypes.product.category.value = utils.getCategories()[0].value;
     }
     setFormData(newProductTypes[type]);
     setType(type);

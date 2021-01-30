@@ -62,7 +62,13 @@ const StockScreen = (props) => {
           onPress: () =>
             utils.navigate("StockDetail", { productId: el.id, client: false }),
         },
-        { icon: "comments-dollar", onPress: () => console.log("chat") },
+        {
+          icon: "comments-dollar",
+          onPress: () =>
+            props.navigation.navigate("Chat", {
+              productId: el.id,
+            }),
+        },
       ]}
     ></GenericItem>
   ));

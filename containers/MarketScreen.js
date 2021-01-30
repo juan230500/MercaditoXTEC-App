@@ -18,49 +18,6 @@ import { useEffect } from "react";
 import * as utils from "../store/utils";
 import MyButton from "../components/UI/MyButton";
 
-const ITEMS = [
-  {
-    id: "123",
-    name: "abc",
-    price: 123,
-    type: "product",
-    eval: 3,
-    category: "c1",
-  },
-  {
-    id: "1234",
-    name: "efg",
-    price: 321,
-    type: "service",
-    eval: 4.5,
-    category: "c2",
-  },
-  {
-    id: "12345",
-    name: "hij",
-    price: 1,
-    type: "service",
-    eval: 5,
-    category: "c1",
-  },
-  {
-    id: "123457",
-    name: "hij",
-    price: 1,
-    type: "job",
-    eval: 5,
-    category: "c1",
-  },
-  {
-    id: "123456",
-    name: "hij",
-    price: 1,
-    type: "tutorial",
-    eval: 5,
-    category: "c1",
-  },
-];
-
 const OPTIONS = [
   {
     display: "Productos",
@@ -109,7 +66,7 @@ const MarketScreen = (props) => {
   const getItems = async () => {
     const json = await utils.request("/market", "GET");
     console.log("[MARKET]", json);
-    json ? setLoadedItems(json) : setLoadedItems(ITEMS);
+    json && setLoadedItems(json);
   };
 
   const getCategories = async () => {
