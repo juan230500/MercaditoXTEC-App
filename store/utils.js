@@ -2,8 +2,10 @@ import { BASE_URL } from "./constants";
 import store from "./store";
 import { createRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import io from "socket.io-client";
 
 export const navigationRef = createRef();
+export const socket = io(BASE_URL);
 
 export const navigate = (name, params) => {
   navigationRef.current?.navigate(name, params);

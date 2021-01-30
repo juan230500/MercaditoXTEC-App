@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import io from "socket.io-client";
 
 import ChatMessage from "../components/ChatMessage";
 import MyLayout from "../components/MyLayout";
@@ -48,21 +47,20 @@ const ChatScreen = (props) => {
   const [newMessage, setNewMessage] = useState("");
   const [user, setUser] = useState("");
   const [chatId, setChatId] = useState(0);
-  let socket = useRef(io(BASE_URL));
 
   useEffect(() => {
     getMessages();
   }, [props.route.params.productId]);
 
   useEffect(() => {
-    socket.current.on("chat" + chatId, (msg) => {
+    utils.socket.on("chat" + chatId, (msg) => {
       console.log("[MENSAJE]", msg);
       const newMessages = [...messages];
       newMessages.push(msg);
       setMessages(newMessages);
     });
     return () => {
-      socket.current.off("chat" + chatId);
+      utils.socket.off("chat" + chatId);
     };
   }, [messages]);
 
@@ -78,7 +76,7 @@ const ChatScreen = (props) => {
   };
 
   const postMessage = () => {
-    socket.current.emit("message", {
+    utils.socket.emit("message", {
       value: newMessage,
       id: chatId,
       createdBy: user,
@@ -96,14 +94,7 @@ const ChatScreen = (props) => {
     <MyLayout title="Chat" back>
       <View style={styles.container}>
         <View style={styles.chat}>
-          <ScrollView
-            contentContainerStyle={{
-              flex: 1,
-              justifyContent: "flex-end",
-            }}
-          >
-            {items}
-          </ScrollView>
+          <ScrollView>{items}</ScrollView>
         </View>
         <MyTextInput
           value={newMessage}
